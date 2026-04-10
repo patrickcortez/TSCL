@@ -15,6 +15,11 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace TSCL; // list of dictionary of lists (List<Dictionary<string,List<Obj>>> tokens) <- this acts as a whole ass map of the entire file!
 
+/*
+ * TODO's:
+ *  -  Write Modify class to handle modification of TSCL files
+ */
+
 public enum Types // our types of tokens: Sections, Objects, array(list of objects) and pointer (an object which points to a section aka a map)
 {
     SECTION,
@@ -46,7 +51,7 @@ public struct Token //token struct for tokenization
     }
 }
 
-public class Read // read from tscl file
+public class Read : IDisposable// read from tscl file
 {
     string filename = string.Empty; //source file
     Dictionary<string,List<Token>> tokens = new Dictionary<string,List<Token>>(); //list of sections: tokens["Section-name"]
@@ -59,7 +64,16 @@ public class Read // read from tscl file
        return tokens[pos];
     }
 
-    private void advance(string nextsec)
+    public void Dispose() //Clean up after an instance is finished
+    {
+        pos = string.Empty;
+        tokens.Clear();
+        visited.Clear();
+        index = 0;
+        filename = string.Empty;
+    }
+
+    private void advance(string nextsec) //Advance to the next section in the map.
     {
         pos = nextsec;
     }
@@ -80,9 +94,9 @@ public class Read // read from tscl file
 
     private void initilaizeRead() // TSCL tokenizer, THIS took me an hour to think of. 
     {
-        List<Token> tmp = new List<Token>();
+        List<Token> tmp = new List<Token>(); // list of all objects in the section
         string SectionName;
-        foreach(string line in File.ReadAllLines(filename))
+        foreach(string line in File.ReadAllLines(filename)) //read through every line and skip whitespaces
         {
 
             if (string.IsNullOrWhiteSpace(line)) //skip if line is a empty newline
@@ -146,7 +160,7 @@ public class Read // read from tscl file
 
     }
 
-    public void setSection(string Secname)
+    public void setSection(string Secname) // manual Section setup, to control the flow and starting
     {
         if (!tokens.ContainsKey(Secname))
         {
@@ -220,12 +234,12 @@ public class Read // read from tscl file
         return (string)data; // we return string by default
     }
 
-    private string[] getArrayData(string key)
+    private string[] getArrayData(string key) //array handler
     {
-        List<Token> tmp = tokens[pos];
+        List<Token> tmp = tokens[pos]; // get our list of objects to find the said array
         string[]? datas = null;
 
-        foreach(Token tok in tmp)
+        foreach(Token tok in tmp) // iterate through every token, to find the said array:
         {
             if(tok.tokentype == Types.ARRAY && tok.arr.key == key)
             {
@@ -239,7 +253,7 @@ public class Read // read from tscl file
             throw new Exception("Array size cannot be empty!");
         }
 
-        return datas;
+        return datas; // once array is found we return the array to the user
     }
 
 
