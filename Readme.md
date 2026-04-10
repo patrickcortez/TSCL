@@ -69,6 +69,43 @@ isActive=true
 Note: Your Pointer value has to always have a '@' symbol at the very start, other wise its just a regular object.
 And also your *Pointer* has to have the same name as your target *Section*
 
+
+---
+
+## Usage
+
+To use **TSCL** just add the namespace on top of your file and call *Write* to serialize and *Read* to deserialize.
+You can also use the *Token* struct if you want to parse an entire sections objects and use em on your program/app.
+
+``` C#
+
+using TSCL;
+
+namespace Test{
+
+	Public Class Test{
+	
+		public Test(){
+	
+			Read read = new Read("filepath.tscl"); //this is where you place your .tscl file path
+	
+			read.setSection("Section1") // You must set the starting section before grabbing any object data
+	
+			object data = read.getObjectData("Object-Name"); // this is how you use your objects value.
+	
+		}
+	
+	
+	}
+
+
+}
+
+
+```
+
+
+
 ---
 
 ## License
