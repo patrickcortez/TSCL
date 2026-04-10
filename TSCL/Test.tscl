@@ -1,0 +1,10 @@
+# TSCL Template:
+[Section-Name] # This is a section
+Config="value", # this is an object of the section
+ver=2,
+Active=false,
+Packages="Ninja","Cmake","gcc" # this is an array of the section.
+Subsec=@Sub-Section #this is a pointer to another section.
+
+[Sub-Section] #This is a comment
+Data="value"
