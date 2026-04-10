@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections;
-using static TSCL.utils.Utility;
-
-using Obj = (string key, object data); // our object data type
+﻿using static TSCL.utils.Utility;
 using ArrObj = (string key, string[] data);
-using System.Threading.Tasks.Dataflow;
-using System.Security.AccessControl;
-using System.Reflection.Metadata.Ecma335;
+using Obj = (string key, object data); // our object data type
 /*
  * Tez's Simple Configuration Language
  * - is a simple config language that is flat
@@ -17,7 +11,9 @@ namespace TSCL; // list of dictionary of lists (List<Dictionary<string,List<Obj>
 
 /*
  * TODO's:
- *  -  Write Modify class to handle modification of TSCL files
+ *  - Write Modify class to handle modification of TSCL files
+ *  - Write a better string tokenizer than string splitting
+ *  - Handle qoutes and dont disrupt user data.
  */
 
 public enum Types // our types of tokens: Sections, Objects, array(list of objects) and pointer (an object which points to a section aka a map)
@@ -116,7 +112,7 @@ public class Read : IDisposable// read from tscl file
                     tmp.Clear();
                 }
 
-                SectionName = words[0].TrimStart().TrimEnd();
+                SectionName = words[0].TrimStart('[').TrimEnd(']');
                 pos = SectionName;
 
                 if (!tokens.ContainsKey(SectionName)) //initialize the section in the map
@@ -125,9 +121,9 @@ public class Read : IDisposable// read from tscl file
                 }
                 
             }
-            else if (words[1][0] == '@') // Section poiner: points to other sections
+            else if (words[1].Contains('@')) // Section poiner: points to other sections
             {
-                tmp.Add(new Token(Types.POINTER, words[0], words[1]));
+                tmp.Add(new Token(Types.POINTER, words[0], words[1].TrimStart(']')));
             }
             else if (words[1].Contains(',')) //arrays (they are string and string only)
             {
@@ -205,7 +201,7 @@ public class Read : IDisposable// read from tscl file
                 break;
             }else if(tok.tokentype == Types.POINTER && tok.obj.key == key)
             {
-                string target = ((string)tok.obj.data).Trim('@');
+                string target = ((string)tok.obj.data).TrimStart('@');
                 data = handlePointer(target);
                  
             }
@@ -224,9 +220,21 @@ public class Read : IDisposable// read from tscl file
                 }
             }
         }
+
+        if(data is null)
+        {
+            throw new Exception($"Object: {key} or {PointerObjKey} is null!");
+        }
         
-        
-        return data; // we return the raw data and let the user/dev type cast it on their side.
+        if(data is int)
+        {
+            return (int)data;
+        }else if(data is bool)
+        {
+            return (bool)data;
+        }
+
+        return data.ToString(); // we return the data in a string by default
     }
 
     public string[] getArrayData(string key) //array handler
