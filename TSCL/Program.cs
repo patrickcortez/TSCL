@@ -156,6 +156,7 @@ public class Read : IDisposable// read from tscl file
             
         }
 
+        current().AddRange(tmp); //final flush before resetting our current position
         pos = string.Empty; //reset position once done
 
     }
@@ -193,7 +194,7 @@ public class Read : IDisposable// read from tscl file
     public object getObjectData(string key,string PointerObjKey = "") // key and Pointer Object key for grabbing objects in another section(Empty by default)
     {
         List<Token> tmp = tokens[pos];
-        object? data = null;
+        object data = null;
 
 
         foreach(Token tok in tmp)
@@ -210,13 +211,7 @@ public class Read : IDisposable// read from tscl file
             }
         }
 
-        if(data?.GetType() == typeof(int)) // if data is integer
-        {
-            return (int)data;
-        }else if (data?.GetType() == typeof(bool)) //if its a boolean
-        {
-            return (bool)data;
-        }else if(data is Token[] tokarr) // pointer handling for all its objects
+        if(data is Token[] tokarr) // pointer handling for all its objects
         {
             foreach(Token tok in tokarr)
             {
@@ -231,7 +226,7 @@ public class Read : IDisposable// read from tscl file
         }
         
         
-        return (string)data; // we return string by default
+        return data; // we return the raw data and let the user/dev type cast it on their side.
     }
 
     public string[] getArrayData(string key) //array handler
