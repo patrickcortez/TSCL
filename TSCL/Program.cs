@@ -274,7 +274,7 @@ public class Write // write to tscle file
     {
         if (!File.Exists(src))
         {
-            throw new FileNotFoundException($"TSCL File: {src} does not exist!");
+            File.Create(src); // make the file for the user
         }else if(Path.GetExtension(src) != ".tscl")
         {
             throw new Exception($"File: {Path.GetFileName(src)} is not a TSCL File!");

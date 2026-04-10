@@ -86,6 +86,8 @@ namespace Test{
 	Public Class Test{
 	
 		public Test(){
+
+			//Deserializing
 	
 			Read read = new Read("filepath.tscl"); //this is where you place your .tscl file path
 	
@@ -93,6 +95,22 @@ namespace Test{
 	
 			object data = read.getObjectData("Object-Name"); // this is how you use your objects value.
 	
+		}
+
+		public void initiateFile(){ // Serializing
+		
+			Write write = new Write("filepath.tscl") // If the file doesnt exist TSCL can make it for you.
+
+			write.AddSection("SectionName"); // This is how we add our section
+
+			write.SetSection("SectionName"); //After adding our section, we need to set to use it, otherwise our current section is null
+
+			write.AddObject("key","value",Types.OBJECT) // this is how add our objects, arrays and pointers to our section, object value can be
+				//int, bool or string. But array values are only string.
+
+			write.WriteToFile(); //After we are done, we call the writetofile method, to confirm it.
+		
+		
 		}
 	
 	
@@ -104,7 +122,7 @@ namespace Test{
 
 ```
 
-
+More will be added soon, but for now its just Read and Write.
 
 ---
 
