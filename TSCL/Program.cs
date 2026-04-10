@@ -190,7 +190,7 @@ public class Read : IDisposable// read from tscl file
         return tmp;
     }
 
-    private object getObjectData(string key,string PointerObjKey = "") // key and Pointer Object key for grabbing objects in another section(Empty by default)
+    public object getObjectData(string key,string PointerObjKey = "") // key and Pointer Object key for grabbing objects in another section(Empty by default)
     {
         List<Token> tmp = tokens[pos];
         object? data = null;
@@ -234,7 +234,7 @@ public class Read : IDisposable// read from tscl file
         return (string)data; // we return string by default
     }
 
-    private string[] getArrayData(string key) //array handler
+    public string[] getArrayData(string key) //array handler
     {
         List<Token> tmp = tokens[pos]; // get our list of objects to find the said array
         string[]? datas = null;
