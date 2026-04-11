@@ -146,8 +146,6 @@ namespace Test{
 
 ```
 
-More will be added soon, but for now its just Read and Write.
-
 ---
 
 ## License
