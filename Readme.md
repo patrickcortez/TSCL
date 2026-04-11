@@ -79,7 +79,7 @@ You can also use the *Token* struct if you want to parse an entire sections obje
 
 ``` C#
 
-using TSCL;
+using TSCL; // Just Include this namespace to use: Read,Write and Modify
 
 namespace Test{
 
@@ -104,6 +104,8 @@ namespace Test{
 				// leaving the parameter blank.
 			
 			}
+
+			initiateFile();
 	
 		}
 
@@ -123,7 +125,18 @@ namespace Test{
 		
 		
 		}
-	
+
+		public void FileModification() // File Modification
+		{
+			using(Modify mod = new Modify("filename.tscl")){ //always make sure the file exists
+			
+				mod.SetSection("Section1"); // Always set your target section before modifying
+				
+				mod.ModifyObject("Object_Name","NewValue"); // Modify
+				
+			}
+		
+		}
 	
 	}
 

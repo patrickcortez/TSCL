@@ -13,8 +13,6 @@ namespace TSCL; // list of dictionary of lists (List<Dictionary<string,List<Obj>
 /*
  * TODO's:
  *  - Write Modify class to handle modification of TSCL files
- *  - Write a better string tokenizer than string splitting
- *  - Handle qoutes and dont disrupt user data.
  */
 
 public enum Types // our types of tokens: Sections, Objects, array(list of objects) and pointer (an object which points to a section aka a map)

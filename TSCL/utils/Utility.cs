@@ -119,7 +119,30 @@ namespace TSCL.utils
                 tmp += c;
             }
 
+            if(tmp != string.Empty)
+            {
+                arr.Add(tmp);
+            }
+
             return arr.ToArray();
+
+        }
+
+        public static string TrimPrefix(string data,char prefix) //Trim by Prefix
+        {
+            StringBuilder nStr = new StringBuilder();
+
+            foreach(char c in data)
+            {
+                if(c == prefix)
+                {
+                    continue;
+                }
+
+                nStr.Append(c);
+            }
+
+            return nStr.ToString();
 
         }
     }

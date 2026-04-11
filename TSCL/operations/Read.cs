@@ -57,7 +57,7 @@ namespace TSCL.operations
                 }
 
 
-                char[] seperators = { ' ', ',' };
+                char[] seperators = { '=', ',' };
                 string[] words = Tokenize(line,seperators);
 
                 if (words[0][0] == '[' && words[0][words[0].Length - 1] == ']') //Section
