@@ -25,6 +25,8 @@ on TSCL.operations
 - Added Modify Class in operations
 
 - Added getSectionObjects in Read Class</PackageReleaseNotes>
+
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
 	<ItemGroup>
