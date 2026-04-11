@@ -4,18 +4,22 @@ using static TSCL.utils.Utility;
 
 namespace TSCL.operations
 {
-    public class Write : IDisposable // write to tscle file
+    /// <summary>
+    ///  This Class is responsible for Serializing TSCL Format/Structure 
+    ///  to a .tscl file.
+    /// </summary>
+    public class Write // write to tscle file
     {
         string filename = string.Empty; //source file
         Dictionary<string, List<Token>> TSCL;
 
         string pos = string.Empty;
 
-        public void Dispose() // clean up after instance is finished
-        {
-            TSCL.Clear();
-            filename = string.Empty;
-        }
+        /// <summary>
+        /// Constructor Initializes the members.
+        /// </summary>
+        /// <param name="src"> This Parameter is the file you want modified</param>
+        /// <exception cref="Exception"> If the file doesn't have the .tscl extension then we throw in an Error</exception>
 
         public Write(string src)
         {
@@ -32,6 +36,12 @@ namespace TSCL.operations
             TSCL = new Dictionary<string, List<Token>>();
         }
 
+        /// <summary>
+        /// Adds a Section to the Dictionary 'TSCL'
+        /// </summary>
+        /// <param name="name"> The name of the section you want to add</param>
+        /// <exception cref="ArgumentNullException">The section name cannot be empty</exception>
+
         public void AddSection(string name) // Adding sections to TSCL Map
         {
             if (name == string.Empty) // if sec name is empty
@@ -44,6 +54,12 @@ namespace TSCL.operations
             TSCL[name] = new List<Token>();
         }
 
+        /// <summary>
+        /// Setting the current section to add objects in.
+        /// </summary>
+        /// <param name="name">Name of the section you want to add objects in</param>
+        /// <exception cref="IndexOutOfRangeException">if Section Name isnt on the map, we throw in an error</exception>
+
         public void SetSection(string name) //to change current position
         {
 
@@ -54,11 +70,21 @@ namespace TSCL.operations
 
             pos = name;
         }
-
+        /// <summary>
+        /// A Tracker for the Write class that tracks the current session in the dictionary.
+        /// </summary>
+        /// <returns>It returns the current list of tokens</returns>
         private List<Token> Current() // our tracker
         {
             return TSCL[pos];
         }
+
+        /// <summary>
+        /// Adds an object to the current section.
+        /// </summary>
+        /// <param name="key">Name of object</param>
+        /// <param name="data">Value of the object</param>
+        /// <param name="tokentype">Token type of the object: Object or Pointer</param>
 
         public void AddObject(string key, object data, Types tokentype) //adding objects
         {
@@ -72,10 +98,21 @@ namespace TSCL.operations
             }
         }
 
+        /// <summary>
+        /// Adds an array of string to the section
+        /// </summary>
+        /// <param name="key">Name of the array</param>
+        /// <param name="datas">Elements of the array</param>
+
         public void AddArray(string key, string[] datas) //for adding arrays 
         {
             Current().Add(new Token(Types.ARRAY, key, null, datas, true));
         }
+
+        /// <summary>
+        /// Write the entire Section to file once
+        /// changes are done and final.
+        /// </summary>
 
         public void WriteToFile() //Write current section to file, programmers mut manually change section then write to file
         {

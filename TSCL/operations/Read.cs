@@ -3,7 +3,11 @@ using static TSCL.utils.Utility;
 
 namespace TSCL.operations
 {
-    public class Read : IDisposable// read from tscl file
+
+    /// <summary>
+    /// This class is responsible for Deserializing/Reading contents of a .tscl file.
+    /// </summary>
+    public class Read // read from file
     {
         string filename = string.Empty; //source file
         Dictionary<string, List<Token>> tokens = new Dictionary<string, List<Token>>(); //list of sections: tokens["Section-name"]
@@ -11,25 +15,29 @@ namespace TSCL.operations
         HashSet<string> visited;
         int index = 0;
 
+        /// <summary>
+        /// an indicator of the which section, its currently in
+        /// </summary>
+        /// <returns>It returns the current sections objects</returns>
         private List<Token> current()
         {
             return tokens[pos];
         }
 
-        public void Dispose() //Clean up after an instance is finished
-        {
-            pos = string.Empty;
-            tokens.Clear();
-            visited.Clear();
-            index = 0;
-            filename = string.Empty;
-        }
-
+        /// <summary>
+        /// changes the current section to what the programmer/dev wants
+        /// </summary>
+        /// <param name="nextsec">Name of the section the programmer/dev wants to advance</param>
         private void advance(string nextsec) //Advance to the next section in the map.
         {
             pos = nextsec;
         }
 
+        /// <summary>
+        /// Initializes a new instance by reading the .tscl file.
+        /// </summary>
+        /// <param name="src"></param>
+        /// <exception cref="FileNotFoundException"></exception>
         public Read(string src)
         {
 
@@ -43,6 +51,10 @@ namespace TSCL.operations
 
             initilaizeRead();
         }
+
+        /// <summary>
+        /// Reads entire tscl file line by line and tokenizes it.
+        /// </summary>
 
         private void initilaizeRead() // TSCL tokenizer, THIS took me an hour to think of. 
         {
@@ -114,6 +126,11 @@ namespace TSCL.operations
 
         }
 
+        /// <summary>
+        /// Gets all of the objects in a section
+        /// </summary>
+        /// <param name="section_name">Name of the section you want to the objects of</param>
+        /// <returns>It returns the objects of the sections as an array of Tokens</returns>
         public Token[] getSectionObjects(string section_name = "") // get all Objects from a section, User can either use the current section or traverse to another.
         {
 
@@ -126,6 +143,12 @@ namespace TSCL.operations
             return toks;
         }
 
+        /// <summary>
+        /// Sets the current section to the specified name.
+        /// </summary>
+        /// <param name="Secname">Name of the section you want to start with</param>
+        /// <exception cref="IndexOutOfRangeException">Thrown if section is not in Dictionary</exception>
+
         public void setSection(string Secname) // manual Section setup, to control the flow and starting
         {
             if (!tokens.ContainsKey(Secname))
@@ -135,7 +158,12 @@ namespace TSCL.operations
 
             pos = Secname;
         }
-
+        /// <summary>
+        /// It handles Pointers by advancing to that section
+        /// </summary>
+        /// <param name="Point">Name of the section</param>
+        /// <returns>It returns the entire objects of the said section</returns>
+        /// <exception cref="Exception">Thrown if the pointers value isnt a section</exception>
         private Token[] handlePointer(string Point)
         {
             string oldPos = pos;
@@ -150,12 +178,18 @@ namespace TSCL.operations
                 visited.Add(Point);
             }
 
-            //  PlaceHolder
             Token[] tmp = current().ToArray();
             pos = oldPos;
             return tmp;
         }
 
+        /// <summary>
+        /// It grabs the specified value of an object in the current section
+        /// </summary>
+        /// <param name="key">Name of the object</param>
+        /// <param name="PointerObjKey">Name of the object if the object is in a pointer</param>
+        /// <returns>returns value of the objects</returns>
+        /// <exception cref="Exception">Thrown if the object is of null value</exception>
         public object getObjectData(string key, string PointerObjKey = "") // key and Pointer Object key for grabbing objects in another section(Empty by default)
         {
             List<Token> tmp = tokens[pos];
@@ -208,6 +242,13 @@ namespace TSCL.operations
 
             return data.ToString(); // we return the data in a string by default
         }
+
+        /// <summary>
+        /// It gets the values of an array object
+        /// </summary>
+        /// <param name="key">name of the array</param>
+        /// <returns>It returns an Array of strings</returns>
+        /// <exception cref="Exception">Thrown if the arrays size is 0</exception>
 
         public string[] getArrayData(string key) //array handler
         {

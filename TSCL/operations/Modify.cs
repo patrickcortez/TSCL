@@ -3,19 +3,29 @@ using static TSCL.utils.Utility;
 
 namespace TSCL.operations
 {
-    public class Modify : IDisposable
+    /// <summary>
+    /// This class handles all file modification in TSCL.
+    /// If you want to change a value of an object.
+    /// </summary>
+    public class Modify //Modify object in file
     {
         string fname,Section;
         List<string> lines;
         bool found = false;
 
+        /// <summary>
+        /// Initializes the file and reads the file for modification.
+        /// </summary>
+        /// <param name="filename">Your file you want to modify</param>
+        /// <exception cref="FileNotFoundException">if the file doesnt exist then we cant modify it</exception>
+        /// <exception cref="Exception">if the file exists but the section does not, so we cant modify a non existent section</exception>
         public Modify(string filename) // Modify class constructor
         {
             if (!File.Exists(filename)) // guard clause to check if file exists
             {
                 throw new FileNotFoundException($"File: {filename} not found!");
             }
-
+           
             fname = filename;
             lines = new List<string>();
 
@@ -26,14 +36,11 @@ namespace TSCL.operations
                 throw new Exception($"Section: {Section} does not exist!");
             }
         }
-
-
-        public void Dispose() // clean up after instance is done.
-        {
-            lines.Clear();
-            fname = string.Empty;
-            Section = string.Empty;
-        }
+        /// <summary>
+        /// Sets the current section you want to modify
+        /// </summary>
+        /// <param name="SectionName">Name of the sectiob you want to modify</param>
+        /// <exception cref="ArgumentNullException">if the section name is empty, we throw an error</exception>
 
         public void SetSection(string SectionName) // This is where we set our target section.
         {
@@ -45,6 +52,10 @@ namespace TSCL.operations
 
             Section = SectionName;
         }
+
+        /// <summary>
+        /// starts reading the file line by line.
+        /// </summary>
 
         private void initiateRead() // File Reading Line by line
         {
@@ -83,6 +94,13 @@ namespace TSCL.operations
 
             
         }
+
+        /// <summary>
+        /// Modifies the value of an existing object identified by the specified key within the current section.
+        /// </summary>
+        /// <param name="key">Name of the object you want to modify</param>
+        /// <param name="newvalue">Tnew value of the object</param>
+        /// <exception cref="Exception">Thrown if the current section does not contain any objects.</exception>
 
         public void ModifyObject(string key,string newvalue) // Modify an Object in a section.
         {
