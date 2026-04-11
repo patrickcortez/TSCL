@@ -88,22 +88,23 @@ namespace Test{
 	
 		public Test(string filename){
 
+			Initializer.setFile("FilePath.tscl") //make sure you set your file before using: Read, Write and Modify
 
 			Token[] tokens; 
 			//Deserializing
-			using(Read read = new Read(filename)){ // This is how we initialize Read, so that its dispose method is called once this instance is done.
+			Read read = new Read()// Initialize read
 				
-				read.setSection("Section1"); //We then set which section to start with
+			read.setSection("Section1"); //We then set which section to start with
 
-				object data = read.getObjectData("Object_Name"); //after setting we can grab our datas value with the getObjectData()
+			object data = read.getObjectData("Object_Name"); //after setting we can grab our datas value with the getObjectData()
 
-				arr = read.getArrayData("Array_Name"); //Or if its an array we can go ahead and use the getArrayData(), since it returns a string Array.
+			arr = read.getArrayData("Array_Name"); //Or if its an array we can go ahead and use the getArrayData(), since it returns a string Array.
 
-				tokens = read.getSectionObjects("NextSection"); // We can also grab objects of Sections and manually use them.
-				// in the parameters you can put a section name to advance to that section or use the current section by
-				// leaving the parameter blank.
+			tokens = read.getSectionObjects("NextSection"); // We can also grab objects of Sections and manually use them.
+			// in the parameters you can put a section name to advance to that section or use the current section by
+			// leaving the parameter blank.
 			
-			}
+			
 
 			initiateFile();
 	
@@ -111,30 +112,30 @@ namespace Test{
 
 		public void initiateFile(){ // Serializing
 		
-			using(Write write = new Write("filepath.tscl")){// If the file doesnt exist TSCL can make it for you.
+			using(Write write = new Write()// Initialize Write
 
-				write.AddSection("SectionName"); // This is how we add our section
+			write.AddSection("SectionName"); // This is how we add our section
 
-				write.SetSection("SectionName"); //After adding our section, we need to set to use it, otherwise our current section is null
+			write.SetSection("SectionName"); //After adding our section, we need to set to use it, otherwise our current section is null
 
-				write.AddObject("key","value",Types.OBJECT) // this is how add our objects, arrays and pointers to our section, object value can be
+			write.AddObject("key","value",Types.OBJECT) // this is how add our objects, arrays and pointers to our section, object value can be
 					//int, bool or string. But array values are only string.
 
-				write.WriteToFile(); //After we are done, we call the writetofile method, to confirm it.
-			}
+			write.WriteToFile(); //After we are done, we call the writetofile method, to confirm it.
+			
 		
 		
 		}
 
 		public void FileModification() // File Modification
 		{
-			using(Modify mod = new Modify("filename.tscl")){ //always make sure the file exists
+			Modify mod = new Modify() //always make sure the file exists
 			
-				mod.SetSection("Section1"); // Always set your target section before modifying
+			mod.SetSection("Section1"); // Always set your target section before modifying
 				
-				mod.ModifyObject("Object_Name","NewValue"); // Modify
+			mod.ModifyObject("Object_Name","NewValue"); // Modify
 				
-			}
+			
 		
 		}
 	
