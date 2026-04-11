@@ -12,9 +12,15 @@ namespace TSCL; // list of dictionary of lists (List<Dictionary<string,List<Obj>
 
 /*
  * TODO's:
- *  - Write Modify class to handle modification of TSCL files
+ *  - Improve Tokenizer with StreamReader.
+ *  - Improve Error Handling
+ *  - Refine Pointers.
  */
 
+
+/// <summary>
+///  Specifies the token type defitions for our operations
+/// </summary>
 public enum Types // our types of tokens: Sections, Objects, array(list of objects) and pointer (an object which points to a section aka a map)
 {
     SECTION,
@@ -23,6 +29,10 @@ public enum Types // our types of tokens: Sections, Objects, array(list of objec
     POINTER
 }
 
+
+/// <summary>
+/// Specificies the token struct for tokenization
+/// </summary>
 public struct Token //token struct for tokenization
 {
    public Types tokentype; // to determine our token type
@@ -43,6 +53,31 @@ public struct Token //token struct for tokenization
             obj = new Obj(key, data);
         }
                 
+    }
+
+}
+
+/// <summary>
+/// Set FilePath for all 3 classes to use: Read,Write and Modify
+/// </summary>
+public static class Initialize //Sets the file for all 3 classes, instead of having to declare the file you want to use
+{
+    public static string FileName { get; private set; }
+
+    public static void setFile(string src) //sets the path for the 3 classes to use.
+    {
+
+        if (!File.Exists(src)) //guard clause if the file does not exist
+        {
+            throw new FileNotFoundException($"File: {src} does not exist!");
+        }
+
+        if(Path.GetExtension(src) != ".tscl") //it exists but its not a tscl file.
+        {
+            throw new Exception($"File: {src} is not a .tscl file!");
+        }
+
+        FileName = src;
     }
 
 }

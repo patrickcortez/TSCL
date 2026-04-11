@@ -1,5 +1,7 @@
 ﻿// TSCL Modify Operation
 using static TSCL.utils.Utility;
+using static TSCL.Initialize;
+using System.ComponentModel;
 
 namespace TSCL.operations
 {
@@ -19,14 +21,14 @@ namespace TSCL.operations
         /// <param name="filename">Your file you want to modify</param>
         /// <exception cref="FileNotFoundException">if the file doesnt exist then we cant modify it</exception>
         /// <exception cref="Exception">if the file exists but the section does not, so we cant modify a non existent section</exception>
-        public Modify(string filename) // Modify class constructor
+        public Modify() // Modify class constructor
         {
-            if (!File.Exists(filename)) // guard clause to check if file exists
+            if (FileName == null)
             {
-                throw new FileNotFoundException($"File: {filename} not found!");
+                Warn("File not set!");
             }
-           
-            fname = filename;
+
+            fname = FileName;
             lines = new List<string>();
 
             initiateRead(); //we start our file reading immediately
@@ -59,36 +61,39 @@ namespace TSCL.operations
 
         private void initiateRead() // File Reading Line by line
         {
-            string curr = string.Empty;
+            string curr = string.Empty,line = string.Empty;
             bool othersection = true;
-            foreach(string line in File.ReadAllLines(fname))
+            using (StreamReader read = new StreamReader(fname))
             {
-                if (string.IsNullOrWhiteSpace(line)) // We skip every white space
+                while ((line = read.ReadLine()) != null)
                 {
-                    continue;
-                }
-
-                if (line.StartsWith('[')) // Section handling
-                {
-                    curr = line.TrimStart('[').TrimEnd(']');
-                    
-
-                    if (curr == Section) // we must check if the current section is our target section, otherwise we are in a different section
+                    if (string.IsNullOrWhiteSpace(line)) // We skip every white space
                     {
-                        othersection = false;
-                        found = true;
+                        continue;
                     }
 
-                    othersection = true;
-                }
+                    if (line.StartsWith('[')) // Section handling
+                    {
+                        curr = line.TrimStart('[').TrimEnd(']');
 
-                if (!othersection) // we only append to our line list if we are on our target section
-                {
-                    lines.Add(line);
-                }
-                else
-                {
-                    continue;
+
+                        if (curr == Section) // we must check if the current section is our target section, otherwise we are in a different section
+                        {
+                            othersection = false;
+                            found = true;
+                        }
+
+                        othersection = true;
+                    }
+
+                    if (!othersection) // we only append to our line list if we are on our target section
+                    {
+                        lines.Add(line);
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
             }
 

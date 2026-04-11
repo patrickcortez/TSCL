@@ -1,5 +1,6 @@
 ﻿// TSCL Read Operation
 using static TSCL.utils.Utility;
+using static TSCL.Initialize;
 
 namespace TSCL.operations
 {
@@ -38,15 +39,15 @@ namespace TSCL.operations
         /// </summary>
         /// <param name="src"></param>
         /// <exception cref="FileNotFoundException"></exception>
-        public Read(string src)
+        public Read()
         {
 
-            if (!File.Exists(src))
+            if (FileName == null)
             {
-                throw new FileNotFoundException($"File: {src} does not exist!");
+                Warn("File not set!");
             }
 
-            filename = src; // pass sourcefile on Initialization
+            filename = FileName; // pass sourcefile on Initialization
             visited = new HashSet<string>();
 
             initilaizeRead();
@@ -55,73 +56,84 @@ namespace TSCL.operations
         /// <summary>
         /// Reads entire tscl file line by line and tokenizes it.
         /// </summary>
-
         private void initilaizeRead() // TSCL tokenizer, THIS took me an hour to think of. 
         {
             List<Token> tmp = new List<Token>(); // list of all objects in the section
-            string SectionName;
-            foreach (string line in File.ReadAllLines(filename)) //read through every line and skip whitespaces
+            string SectionName,line;
+            using (StreamReader read = new StreamReader(filename))
             {
-
-                if (string.IsNullOrWhiteSpace(line)) //skip if line is a empty newline
+                while ((line = read.ReadLine()) != null) //read through every line and skip whitespaces
                 {
-                    continue;
-                }
 
-
-                char[] seperators = { '=', ',' };
-                string[] words = Tokenize(line,seperators);
-
-                if (words[0][0] == '[' && words[0][words[0].Length - 1] == ']') //Section
-                {
-                    if (tmp.Count > 0)
+                    if (string.IsNullOrWhiteSpace(line)) //skip if line is a empty newline
                     {
-                        current().AddRange(tmp);
-                        tmp.Clear();
+                        continue;
                     }
 
-                    SectionName = words[0].TrimStart('[').TrimEnd(']');
-                    pos = SectionName;
-
-                    if (!tokens.ContainsKey(SectionName)) //initialize the section in the map
+                    if (line.StartsWith('#')) //We skip comments
                     {
-                        tokens[SectionName] = new List<Token>();
-                    }
-
-                }
-                else if (words[1].Contains('@')) // Section poiner: points to other sections
-                {
-                    tmp.Add(new Token(Types.POINTER, words[0], words[1].TrimStart(']')));
-                }
-                else if (words[1].Contains(',')) //arrays (they are string and string only)
-                {
-                    string[] subs = words[1].Split(',');
-
-                    tmp.Add(new Token(Types.ARRAY, words[0], string.Empty, subs, true));
-                }
-                else if (!words[1].Contains(',')) // non array object
-                {
-                    bool res;
-                    if (isInt(words[1])) //integer
-                    {
-                        tmp.Add(new Token(Types.OBJECT, words[0], Strint(words[1])));
-                    }
-                    else if (bool.TryParse(words[1], out res)) //boolean 
-                    {
-                        tmp.Add(new Token(Types.OBJECT, words[0], ConvertBool(words[1])));
-                    }
-                    else //string
-                    {
-                        tmp.Add(new Token(Types.OBJECT, words[0], words[1]));
+                        continue;
                     }
 
 
+                    char[] seperators = { '=', ',' };
+                    string[] words = Tokenize(line, seperators);
+
+                    if (words[0][0] == '[' && words[0][words[0].Length - 1] == ']') //Section
+                    {
+                        if (tmp.Count > 0)
+                        {
+                            current().AddRange(tmp);
+                            tmp.Clear();
+                        }
+
+                        SectionName = words[0].TrimStart('[').TrimEnd(']');
+                        pos = SectionName;
+
+                        if (!tokens.ContainsKey(SectionName)) //initialize the section in the map
+                        {
+                            tokens[SectionName] = new List<Token>();
+                        }
+
+                    }
+                    else if (words[1].Contains('@')) // Section poiner: points to other sections
+                    {
+                        tmp.Add(new Token(Types.POINTER, words[0], words[1].TrimStart(']')));
+                    }
+                    else if (words[1].Contains(',')) //arrays (they are string and string only)
+                    {
+                        string[] subs = words[1].Split(',');
+
+                        tmp.Add(new Token(Types.ARRAY, words[0], string.Empty, subs, true));
+                    }
+                    else if (!words[1].Contains(',')) // non array object
+                    {
+                        bool res;
+                        if (isInt(words[1])) //integer
+                        {
+                            tmp.Add(new Token(Types.OBJECT, words[0], Strint(words[1])));
+                        }
+                        else if (bool.TryParse(words[1], out res)) //boolean 
+                        {
+                            tmp.Add(new Token(Types.OBJECT, words[0], ConvertBool(words[1])));
+                        }
+                        else //string
+                        {
+                            tmp.Add(new Token(Types.OBJECT, words[0], words[1]));
+                        }
+
+
+                    }
+
+
                 }
-
-
             }
 
-            current().AddRange(tmp); //final flush before resetting our current position
+            if (tmp.Count > 0)
+            {
+                current().AddRange(tmp); //final flush before resetting our current position
+            }
+            
             pos = string.Empty; //reset position once done
 
         }

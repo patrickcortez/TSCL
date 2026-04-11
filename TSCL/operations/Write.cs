@@ -1,5 +1,6 @@
 ﻿// TSCL Write Operation
 using static TSCL.utils.Utility;
+using static TSCL.Initialize;
 
 
 namespace TSCL.operations
@@ -18,21 +19,17 @@ namespace TSCL.operations
         /// <summary>
         /// Constructor Initializes the members.
         /// </summary>
-        /// <param name="src"> This Parameter is the file you want modified</param>
+        /// 
         /// <exception cref="Exception"> If the file doesn't have the .tscl extension then we throw in an Error</exception>
 
-        public Write(string src)
+        public Write()
         {
-            if (!File.Exists(src))
+            if(FileName == null)
             {
-                File.Create(src); // make the file for the user
-            }
-            else if (Path.GetExtension(src) != ".tscl")
-            {
-                throw new Exception($"File: {Path.GetFileName(src)} is not a TSCL File!");
+                Warn("File not set!");
             }
 
-            filename = src; // pass sourcefile on Initialization
+            filename = FileName; // pass sourcefile on Initialization
             TSCL = new Dictionary<string, List<Token>>();
         }
 

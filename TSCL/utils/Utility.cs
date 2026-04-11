@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Linq.Expressions;
 using System.Text;
 
 namespace TSCL.utils
@@ -105,6 +104,8 @@ namespace TSCL.utils
             string tmp = string.Empty;
             List<string> arr = new List<string>();
             bool qoutes = false; // Our state determiner for qoutes
+            bool hasSeperator = false;
+
 
             foreach(char c in data)
             {
@@ -119,36 +120,35 @@ namespace TSCL.utils
                     tmp += c;
                     continue;
                 }
-                else if(!qoutes)
-                {
-                    arr.Add(tmp);
-                    tmp = string.Empty;
-                }
 
-
-
-                if (seperators.Contains(c) && tmp != string.Empty)
-                {
-                    arr.Add(tmp);
-                    tmp = string.Empty;
-                    continue;
-                }
-                else
-                {
-                    continue;
-                }
-
-                if(c == '#') // We ignore comments by breaking the loop so the rest of the text will be ignored.
+                if (c == '#') // We ignore comments by breaking the loop so the rest of the text will be ignored.
                 {
                     break;
                 }
 
+
+
+                if (seperators.Contains(c))
+                {
+                    hasSeperator = true;
+                    if (tmp != string.Empty)
+                    {
+                        arr.Add(tmp);
+                        tmp = string.Empty;
+                    }
+                    continue;
+                }
                 tmp += c;
             }
 
             if(tmp != string.Empty)
             {
                 arr.Add(tmp);
+            }
+
+            if (!hasSeperator)
+            {
+                Warn($"Invalid line: {data}");
             }
 
             return arr.ToArray();
@@ -178,6 +178,11 @@ namespace TSCL.utils
 
             return nStr.ToString();
 
+        }
+
+        internal static Exception Warn(string msg)
+        {
+            throw new Exception(msg);
         }
     }
 }
