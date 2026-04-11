@@ -84,31 +84,42 @@ using TSCL;
 namespace Test{
 
 	Public Class Test{
+		string[] arr;
 	
-		public Test(){
+		public Test(string filename){
 
+
+			Token[] tokens; 
 			//Deserializing
-	
-			Read read = new Read("filepath.tscl"); //this is where you place your .tscl file path
-	
-			read.setSection("Section1") // You must set the starting section before grabbing any object data
-	
-			object data = read.getObjectData("Object-Name"); // this is how you use your objects value.
+			using(Read read = new Read(filename)){ // This is how we initialize Read, so that its dispose method is called once this instance is done.
+				
+				read.setSection("Section1"); //We then set which section to start with
+
+				object data = read.getObjectData("Object_Name"); //after setting we can grab our datas value with the getObjectData()
+
+				arr = read.getArrayData("Array_Name"); //Or if its an array we can go ahead and use the getArrayData(), since it returns a string Array.
+
+				tokens = read.getSectionObjects("NextSection"); // We can also grab objects of Sections and manually use them.
+				// in the parameters you can put a section name to advance to that section or use the current section by
+				// leaving the parameter blank.
+			
+			}
 	
 		}
 
 		public void initiateFile(){ // Serializing
 		
-			Write write = new Write("filepath.tscl") // If the file doesnt exist TSCL can make it for you.
+			using(Write write = new Write("filepath.tscl")){// If the file doesnt exist TSCL can make it for you.
 
-			write.AddSection("SectionName"); // This is how we add our section
+				write.AddSection("SectionName"); // This is how we add our section
 
-			write.SetSection("SectionName"); //After adding our section, we need to set to use it, otherwise our current section is null
+				write.SetSection("SectionName"); //After adding our section, we need to set to use it, otherwise our current section is null
 
-			write.AddObject("key","value",Types.OBJECT) // this is how add our objects, arrays and pointers to our section, object value can be
-				//int, bool or string. But array values are only string.
+				write.AddObject("key","value",Types.OBJECT) // this is how add our objects, arrays and pointers to our section, object value can be
+					//int, bool or string. But array values are only string.
 
-			write.WriteToFile(); //After we are done, we call the writetofile method, to confirm it.
+				write.WriteToFile(); //After we are done, we call the writetofile method, to confirm it.
+			}
 		
 		
 		}
