@@ -1,10 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  
+	<PackageID>TSCL.Parser</PackageID> 
+	<Version>1.0.0</Version>
+	<Description>TSCL or Tezz's Coniguration Language is a simple config language that is flat in nature and nesting is handled using pointers instead of braces</Description>
+	<Author>Patrick Cortez</Author>
+	<Tags>configurations;tscl;settings</Tags>
+	  
+	<RepositoryURL>https://github.com/patrickcortez/TSCL.git</RepositoryURL>
+	<RepositoryType>git</RepositoryType>
+	<PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+	<PackageReadmeFile>Readme.md</PackageReadmeFile>
+	<Title>TSCL Parser</Title>
   </PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\Readme.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
 
 </Project>
