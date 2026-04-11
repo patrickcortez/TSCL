@@ -14,7 +14,6 @@ namespace TSCL.operations
         Dictionary<string, List<Token>> tokens = new Dictionary<string, List<Token>>(); //list of sections: tokens["Section-name"]
         string pos = "";
         HashSet<string> visited;
-        int index = 0;
 
         /// <summary>
         /// an indicator of the which section, its currently in
@@ -94,17 +93,20 @@ namespace TSCL.operations
                         {
                             tokens[SectionName] = new List<Token>();
                         }
-
+                        advanceline();
                     }
                     else if (words[1].Contains('@')) // Section poiner: points to other sections
                     {
                         tmp.Add(new Token(Types.POINTER, words[0], words[1].TrimStart(']')));
+                        continue;
                     }
                     else if (words[1].Contains(',')) //arrays (they are string and string only)
                     {
                         string[] subs = words[1].Split(',');
 
                         tmp.Add(new Token(Types.ARRAY, words[0], string.Empty, subs, true));
+                        advanceline();
+                        continue;
                     }
                     else if (!words[1].Contains(',')) // non array object
                     {
@@ -122,6 +124,8 @@ namespace TSCL.operations
                             tmp.Add(new Token(Types.OBJECT, words[0], words[1]));
                         }
 
+                        advanceline();
+                        continue;
 
                     }
 

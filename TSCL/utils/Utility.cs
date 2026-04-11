@@ -1,5 +1,8 @@
 ﻿using System.Linq.Expressions;
 using System.Text;
+using static TSCL.Initialize;
+
+using isSection = (bool start, bool end);
 
 namespace TSCL.utils
 {
@@ -42,6 +45,11 @@ namespace TSCL.utils
             {
                 if (!char.IsDigit(c))
                 {
+                    if(c == '-')
+                    {
+                        continue;
+                    }
+
                     return false;
                 }
             }
@@ -99,13 +107,18 @@ namespace TSCL.utils
         /// <returns>It returns a string array</returns>
 
         // TSCL manual tokenizer
-        public static string[] Tokenize(string data,char[] seperators) // data and seperators parameter, so i can define more than 1 seperators: ',',' ' ' or '.' and etc...
+        public static string[] Tokenize(string data,char[] seperators,bool Nospaces = false) // data and seperators parameter, so i can define more than 1 seperators: ',',' ' ' or '.' and etc...
         { 
-            string tmp = string.Empty;
+            StringBuilder tmp = new StringBuilder();
             List<string> arr = new List<string>();
             bool qoutes = false; // Our state determiner for qoutes
-            bool hasSeperator = false;
+            bool hasSeperator = false,hasSpace = false;
+            isSection confirm = new isSection(false,false);
 
+            if(data.StartsWith('[') && data.EndsWith(']'))
+            {
+                confirm = (true, true);
+            }
 
             foreach(char c in data)
             {
@@ -117,7 +130,7 @@ namespace TSCL.utils
 
                 if (qoutes) // Qoute Handling: if its still in qoutes we simply store the current character and continue to the next.
                 {
-                    tmp += c;
+                    tmp.Append(c);
                     continue;
                 }
 
@@ -126,29 +139,47 @@ namespace TSCL.utils
                     break;
                 }
 
+                if (char.IsWhiteSpace(c))
+                {
+                    hasSpace = true;
+
+                    if(Nospaces == true && !qoutes)
+                    {
+                        continue;
+                    }
+                }
 
 
                 if (seperators.Contains(c))
                 {
                     hasSeperator = true;
-                    if (tmp != string.Empty)
+                    if (tmp.Length > 0)
                     {
-                        arr.Add(tmp);
-                        tmp = string.Empty;
+                        arr.Add(tmp.ToString());
+                        tmp.Clear();
                     }
                     continue;
                 }
-                tmp += c;
+                tmp.Append(c);
             }
 
-            if(tmp != string.Empty)
+            if(tmp.Length > 0)
             {
-                arr.Add(tmp);
+                arr.Add(tmp.ToString());
             }
 
-            if (!hasSeperator)
+            if (!hasSeperator && (!confirm.start && !confirm.end)) //warn user about line instead of stopping execution
             {
-                Warn($"Invalid line: {data}");
+                Console.WriteLine("Invalid lines: ",Console.Error);
+                foreach(int line in markedLines)
+                {
+                    Console.Write(line + ",", Console.Error);
+                }
+            }
+
+            if(confirm == (true, true) && hasSeperator)
+            {
+                throw new InvalidSectionNameException(tmp.ToString());
             }
 
             return arr.ToArray();
