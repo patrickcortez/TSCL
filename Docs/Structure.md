@@ -4,25 +4,9 @@ The Structure of this project is relatively simple. In the root folder theres on
 
 - operations : Read,Modify and Write.
 - utils : Utilies of TSCL such as type conversions, String operations and etc...
-- Core.cs : basically this cs file contains the TSCL token types and the Token definition
+- Core.cs : basically this cs file contains the TSCL token types and the Token definition.
 
+*Read.cs* handles all Deserializing Operations, *Write.cs* handles all Serializing operations,
+while *Modify.cs* handles all File Modifications.
 
-
-TSCL : Root Folder
- |
-  \operations : Operations in TSCL
-	|
-	\Read.cs : Deserializer of TSCL
-	|
-	\Write.cs : Serializer of TSCL
-	|
-	\Modify.cs : File modifier of TSCL
- |
- \utils
-	|
-	\Utility.cs : Utilities of TSCL
-
- |
- \Core.cs : Definition of Tokens and Tokentypes.
-
- Developer: *Tezz*
+ Developer: *Tezzz*
