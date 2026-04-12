@@ -78,7 +78,7 @@ public static class Initialize //Sets the file for all 3 classes, instead of hav
     /// setting it in SetFile or instance based. 
     /// </summary>
     public static bool isUniversal { internal get; set; } = false; //if the user wants to pass the file Universally or per instance
-    public static bool isVerbose { internal get; set; } = false;
+    public static bool isVerbose { internal get; set; } = false; // for error logging
 
 
     /// <summary>

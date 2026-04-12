@@ -146,7 +146,13 @@ namespace TSCL.operations
                 }
             }
 
-            File.WriteAllLines(FileName,lines);
+            using(StreamWriter sw = new StreamWriter(fname,false))
+            {
+                foreach(var line in lines)
+                {
+                    sw.WriteLine(line);
+                }
+            }
 
         }
 
@@ -164,6 +170,14 @@ namespace TSCL.operations
                         words[0] = newName;
                         break;
                     }
+                }
+            }
+
+            using (StreamWriter sw = new StreamWriter(fname, false))
+            {
+                foreach (var line in lines)
+                {
+                    sw.WriteLine(line);
                 }
             }
         }
