@@ -137,6 +137,16 @@ namespace TSCL.operations
             {
                 current().AddRange(tmp); //final flush before resetting our current position
             }
+
+            if(markedLines.Count > 0)
+            {
+                Console.WriteLine("Invalid Lines Ignored:",Console.Error);
+
+                foreach (int lin in markedLines)
+                {
+                    Console.WriteLine($"Line {lin}", Console.Error);
+                }
+            }
             
             pos = string.Empty; //reset position once done
 

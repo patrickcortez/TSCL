@@ -107,7 +107,7 @@ namespace TSCL.utils
         /// <returns>It returns a string array</returns>
 
         // TSCL manual tokenizer
-        public static string[] Tokenize(string data,char[] seperators,bool Nospaces = false) // data and seperators parameter, so i can define more than 1 seperators: ',',' ' ' or '.' and etc...
+        internal static string[] Tokenize(string data,char[] seperators,bool Nospaces = false) // data and seperators parameter, so i can define more than 1 seperators: ',',' ' ' or '.' and etc...
         { 
             StringBuilder tmp = new StringBuilder();
             List<string> arr = new List<string>();
@@ -170,14 +170,10 @@ namespace TSCL.utils
 
             if (!hasSeperator && (!confirm.start && !confirm.end)) //warn user about line instead of stopping execution
             {
-                Console.WriteLine("Invalid lines: ",Console.Error);
-                foreach(int line in markedLines)
-                {
-                    Console.Write(line + ",", Console.Error);
-                }
+                markLine(lineN0);
             }
 
-            if(confirm == (true, true) && hasSeperator)
+            if(confirm == (true, true) && hasSeperator) //if the section name is invalid we stop execution(for now)
             {
                 throw new InvalidSectionNameException(tmp.ToString());
             }
@@ -193,25 +189,12 @@ namespace TSCL.utils
         /// <param name="prefix"></param>
         /// <returns>It returns a string without the prefix</returns>
 
-        public static string TrimPrefix(string data,char prefix) //Trim by Prefix
-        {
-            StringBuilder nStr = new StringBuilder();
+        /// <summary>
+        /// Exception Handler of TSCL.
+        /// </summary>
+        /// <param name = "msg" > Error Message to show to user </param>
 
-            foreach(char c in data)
-            {
-                if(c == prefix)
-                {
-                    continue;
-                }
-
-                nStr.Append(c);
-            }
-
-            return nStr.ToString();
-
-        }
-
-        internal static Exception Warn(string msg)
+        internal static Exception Warn(string msg) //Exception Handler
         {
             throw new Exception(msg);
         }
