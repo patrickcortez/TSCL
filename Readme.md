@@ -70,6 +70,15 @@ Note: Your Pointer value has to always have a '@' symbol at the very start, othe
 And also your *Pointer* has to have the same name as your target *Section*
 
 
+## Modes
+
+TSCL has two modes you can toggle in the Initializer class. Simply set the static bool "Universal" to true or false,
+*true* if you want to use TSCL's SetFile in Initializer to pass your file, that way all 3 classes will use Initializers
+Filename instead of their own in their constructor. However when *false* the 3 classes wont use the initializers, instead
+it will use what you pass on its constructor.
+
+Note: Univesal is **true** by default.
+
 ---
 
 ## Usage
