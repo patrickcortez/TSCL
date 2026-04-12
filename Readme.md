@@ -151,7 +151,7 @@ namespace Test{
 
 ## Logo
 
-![Logo](Assets/TSCL_Logo.png)
+![Official](Assets/TSCL_Logo.png)
 
 ---
 
