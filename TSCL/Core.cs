@@ -77,10 +77,8 @@ public static class Initialize //Sets the file for all 3 classes, instead of hav
     /// Indicator if TSCL will use its unified Filename by
     /// setting it in SetFile or instance based. 
     /// </summary>
-    public static bool isUniversal { internal get; set; } = true; //if the user wants to pass the file Universally or per instance
+    public static bool isUniversal { internal get; set; } = false; //if the user wants to pass the file Universally or per instance
     public static bool isVerbose { internal get; set; } = false;
-
-    internal static bool isValid = true;
 
 
     /// <summary>

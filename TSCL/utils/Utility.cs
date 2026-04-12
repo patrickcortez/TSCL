@@ -107,7 +107,7 @@ namespace TSCL.utils
         /// <returns>It returns a string array</returns>
 
         // TSCL manual tokenizer
-        internal static string[] Tokenize(string data,char[] seperators,bool Nospaces = false) // data and seperators parameter, so i can define more than 1 seperators: ',',' ' ' or '.' and etc...
+        internal static string[] Tokenize(string data,char[] seperators,ref bool isValid,bool Nospaces = false) // data and seperators parameter, so i can define more than 1 seperators: ',',' ' ' or '.' and etc...
         { 
             StringBuilder tmp = new StringBuilder();
             List<string> arr = new List<string>();
@@ -188,6 +188,11 @@ namespace TSCL.utils
 
             return arr.ToArray();
 
+        }
+
+        internal static bool isSect(string data)
+        {
+            return (data.StartsWith('[') && data.EndsWith(']')) ==  true;
         }
 
         /// <summary>

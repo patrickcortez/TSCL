@@ -13,6 +13,7 @@ namespace TSCL.operations
         string fname,Section;
         List<string> lines;
         bool found = false;
+        bool isValid = true;
 
         /// <summary>
         /// Initializes the file and reads the file for modification.
@@ -134,7 +135,7 @@ namespace TSCL.operations
             for (int x = 0; x < lines.Count(); x++)
             {
                 char[] sep = { '=' };
-                string[] words = Tokenize(lines[x], sep);
+                string[] words = Tokenize(lines[x], sep,ref isValid);
 
                 if (words[0] == key) // We modify if were at the right object.
                 {
@@ -148,5 +149,24 @@ namespace TSCL.operations
             File.WriteAllLines(FileName,lines);
 
         }
+
+        public void modifySectionName(string oldName,string newName)
+        {
+            for(int x = 0;x < lines.Count; x++)
+            {
+                char[] c = { '=' };
+                string[] words = Tokenize(lines[x],c,ref isValid);
+
+                if (isSect(words[0]))
+                {
+                    if (words[0] == oldName)
+                    {
+                        words[0] = newName;
+                        break;
+                    }
+                }
+            }
+        }
+
     }
 }

@@ -72,12 +72,15 @@ And also your *Pointer* has to have the same name as your target *Section*
 
 ## Modes
 
-TSCL has two modes you can toggle in the Initializer class. Simply set the static bool "Universal" to true or false,
+TSCL has two modes you can toggle in the Initializer class. Simply set the static bool "isUniversal" to true or false,
 *true* if you want to use TSCL's SetFile in Initializer to pass your file, that way all 3 classes will use Initializers
 Filename instead of their own in their constructor. However when *false* the 3 classes wont use the initializers, instead
 it will use what you pass on its constructor.
 
-Note: Universal is **true** by default.
+There is also "isVerbose", which basically prints all the errors in your tscl file. by setting it to true, it
+prints the errors on your console, but if its false it does not.
+
+Note: Both isVerbose and isUniversal is **false** by default.
 
 ---
 

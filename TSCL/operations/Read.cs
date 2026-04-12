@@ -14,6 +14,7 @@ namespace TSCL.operations
         Dictionary<string, List<Token>> tokens = new Dictionary<string, List<Token>>(); //list of sections: tokens["Section-name"]
         string pos = "";
         HashSet<string> visited;
+        bool isvalid = true;
 
         /// <summary>
         /// an indicator of the which section, its currently in
@@ -94,7 +95,7 @@ namespace TSCL.operations
 
 
                     char[] seperators = { '=', ',' };
-                    string[] words = Tokenize(line, seperators);
+                    string[] words = Tokenize(line, seperators,ref isvalid);
 
                     if (words[0].StartsWith('[') && words[0].EndsWith(']')) //Section
                     {
