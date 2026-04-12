@@ -1,7 +1,6 @@
 ﻿// TSCL Modify Operation
-using static TSCL.utils.Utility;
 using static TSCL.Initialize;
-using System.ComponentModel;
+using static TSCL.utils.Utility;
 
 namespace TSCL.operations
 {

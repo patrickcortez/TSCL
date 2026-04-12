@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
 	  
 	<PackageID>TSCL.Parser</PackageID> 
-	<Version>1.2.2</Version>
+	<Version>1.2.3</Version>
 	<Description>TSCL or Tezz's Coniguration Language is a simple config language that is flat in nature and nesting is handled using pointers that points to other sections instead of braces.</Description>
 	<Author>Patrick Cortez</Author>
 	<Tags>configurations;tscl;settings</Tags>
@@ -30,7 +30,11 @@
 
 1.2.2
 - Initailized uninitialized members
-- Added guard clauses in addFile and useFile</PackageReleaseNotes>
+- Added guard clauses in addFile and useFile
+
+1.2.3
+- Added an Universal in initializer class, for instance based file operation.
+- fixed ".tscl" to "tscl" in guard clause.</PackageReleaseNotes>
 
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 
