@@ -149,6 +149,12 @@ namespace Test{
 
 ---
 
+## Logo
+
+![Logo](Assets/TSCL_Logo.png)
+
+---
+
 ## License
 
 This Project is under the GNU General Public License. See the License File for more details.
