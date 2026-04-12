@@ -63,6 +63,9 @@ public struct Token //token struct for tokenization
 public static class Initialize //Sets the file for all 3 classes, instead of having to declare the file you want to use
 {
     public static string FileName { get; private set; } // public get but cant be written outside of this class
+
+    public static List<string>? FileNames { get; private set; }
+
     internal static int lineN0 { get; private set; } = 1; // we always start at line 1;
 
     internal static List<int> markedLines { get; private set; } = new List<int>();
@@ -81,6 +84,17 @@ public static class Initialize //Sets the file for all 3 classes, instead of hav
         }
 
         FileName = src;
+    }
+
+
+    public static void AddFile(string src)
+    {
+        FileNames.Add(src);
+    }
+
+    public static void UseFile(int index)
+    {
+        FileName = FileNames[index];
     }
 
     //For Debugging

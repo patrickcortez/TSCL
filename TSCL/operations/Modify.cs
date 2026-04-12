@@ -107,18 +107,18 @@ namespace TSCL.operations
         /// <param name="newvalue">Tnew value of the object</param>
         /// <exception cref="Exception">Thrown if the current section does not contain any objects.</exception>
 
-        public void ModifyObject(string key,string newvalue) // Modify an Object in a section.
+        public void ModifyObject(string key, string newvalue) // Modify an Object in a section.
         {
             string newLine = string.Empty;
-            if(lines.Count < 1)
+            if (lines.Count < 1)
             {
                 throw new Exception($"Section: {Section} does not have any objects!");
             }
 
-            for(int x = 0;x < lines.Count(); x++)
+            for (int x = 0; x < lines.Count(); x++)
             {
                 char[] sep = { '=' };
-                string[] words = Tokenize(lines[x],sep);
+                string[] words = Tokenize(lines[x], sep);
 
                 if (words[0] == key) // We modify if were at the right object.
                 {
@@ -128,6 +128,9 @@ namespace TSCL.operations
                     break;
                 }
             }
+
+            File.WriteAllLines(FileName,lines);
+            
         }
     }
 }
