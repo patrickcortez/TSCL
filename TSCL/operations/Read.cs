@@ -41,12 +41,12 @@ namespace TSCL.operations
         public Read(string fname = "")
         {
 
-            if (FileName == null && Universal)
+            if (FileName == null && isUniversal)
             {
                 Warn("File not set!");
             }
 
-            if (Universal == true) //if universal option is true, we use the file path from initializer
+            if (isUniversal == true) //if universal option is true, we use the file path from initializer
             {
 
                 filename = FileName; // pass sourcefile on Initialization
@@ -111,7 +111,11 @@ namespace TSCL.operations
                         {
                             tokens[SectionName] = new List<Token>();
                         }
-                        advanceline();
+
+                        if (isVerbose)
+                        {
+                            advanceline();
+                        }
                     }
                     else if (words.Length > 1)
                     {
@@ -125,7 +129,12 @@ namespace TSCL.operations
                             string[] subs = words[1].Split(',');
 
                             tmp.Add(new Token(Types.ARRAY, words[0], string.Empty, subs, true));
-                            advanceline();
+
+                            if (isVerbose)
+                            {
+                                advanceline();
+                            }
+
                             continue;
                         }
                         else if (!words[1].Contains(',')) // non array object
@@ -143,16 +152,22 @@ namespace TSCL.operations
                             {
                                 tmp.Add(new Token(Types.OBJECT, words[0], words[1]));
                             }
-
-                            advanceline();
+                            if (isVerbose)
+                            {
+                                advanceline();
+                            }
                             continue;
 
                         }
                     }
                     else // if line is invalid we just mark them
                     {
-                        advanceline();
-                        markLine(lineN0);
+                        if (isVerbose)
+                        {
+                            advanceline();
+                            markLine(lineN0);
+                        }
+                        continue;
                     }
 
 
@@ -164,7 +179,7 @@ namespace TSCL.operations
                 current().AddRange(tmp); //final flush before resetting our current position
             }
 
-            if(markedLines.Count > 0)
+            if(markedLines.Count > 0 && isVerbose)
             {
                 Console.WriteLine("Invalid Lines Ignored:",Console.Error);
 
@@ -174,8 +189,11 @@ namespace TSCL.operations
                 }
             }
             //reset line for the next script
-            resetLine();
-            ClearLine();
+            if (isVerbose)
+            {
+                resetLine();
+                ClearLine();
+            }
             pos = string.Empty; //reset position once done
 
         }

@@ -25,12 +25,12 @@ namespace TSCL.operations
 
         public Write(string src = "")
         {
-            if(FileName == null && Universal)
+            if(FileName == null && isUniversal)
             {
                 Warn("File not set!");
             }
 
-            if (Universal) // if universal is true, we use initializers file path
+            if (isUniversal) // if universal is true, we use initializers file path
             {
                 filename = FileName; // pass sourcefile on Initialization
             }

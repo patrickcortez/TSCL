@@ -117,11 +117,19 @@ namespace TSCL.utils
 
             if(data.StartsWith('[') && data.EndsWith(']'))
             {
+                if (!isValid)
+                {
+                    isValid = !isValid;
+                }
                 confirm = (true, true);
             }
 
-            foreach(char c in data)
+            foreach (char c in data)
             {
+                if (!isValid) //Skip entire Section if the section name is not valid
+                {
+                    break;
+                }
                 if(c == '"') //if we are in a qoute,we reverse the current value of qoutes then continue to the next
                 {
                     qoutes = !qoutes;
@@ -168,14 +176,14 @@ namespace TSCL.utils
                 arr.Add(tmp.ToString());
             }
 
-            if (!hasSeperator && (!confirm.start && !confirm.end)) //warn user about line instead of stopping execution
-            {
-                markLine(lineN0);
-            }
-
             if(confirm == (true, true) && hasSeperator) //if the section name is invalid we stop execution(for now)
             {
-                throw new InvalidSectionNameException(tmp.ToString());
+                isValid = false;
+                if (isVerbose)
+                {
+                    Console.Error.WriteLine($"Section Name {data} is not valid");
+                    markLine(lineN0);
+                }
             }
 
             return arr.ToArray();

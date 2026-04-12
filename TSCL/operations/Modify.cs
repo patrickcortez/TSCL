@@ -22,12 +22,12 @@ namespace TSCL.operations
         /// <exception cref="Exception">if the file exists but the section does not, so we cant modify a non existent section</exception>
         public Modify(string src = "") // Modify class constructor
         {
-            if (FileName == null && Universal)
+            if (FileName == null && isUniversal)
             {
                 Warn("File not set!");
             }
 
-            if (Universal)
+            if (isUniversal)
             {
                 fname = FileName; // if universal is true, then we use the filename from the initializer
             }
