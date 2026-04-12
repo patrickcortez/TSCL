@@ -146,7 +146,7 @@ namespace TSCL.operations
             }
 
             File.WriteAllLines(FileName,lines);
-            
+
         }
     }
 }

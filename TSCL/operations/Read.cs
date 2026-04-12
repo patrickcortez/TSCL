@@ -96,7 +96,7 @@ namespace TSCL.operations
                     char[] seperators = { '=', ',' };
                     string[] words = Tokenize(line, seperators);
 
-                    if (words[0][0] == '[' && words[0][words[0].Length - 1] == ']') //Section
+                    if (words[0].StartsWith('[') && words[0].EndsWith(']')) //Section
                     {
                         if (tmp.Count > 0)
                         {
@@ -113,7 +113,7 @@ namespace TSCL.operations
                         }
                         advanceline();
                     }
-                    else if (words[1].Contains('@')) // Section poiner: points to other sections
+                    else if (words[1].StartsWith('@')) // Section poiner: points to other sections
                     {
                         tmp.Add(new Token(Types.POINTER, words[0], words[1].TrimStart(']')));
                         continue;
@@ -165,6 +165,7 @@ namespace TSCL.operations
                     Console.WriteLine($"Line {lin}", Console.Error);
                 }
             }
+            //reset line for the next script
             resetLine();
             ClearLine();
             pos = string.Empty; //reset position once done

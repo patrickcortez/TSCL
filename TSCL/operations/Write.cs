@@ -3,6 +3,7 @@ using static TSCL.utils.Utility;
 using static TSCL.Initialize;
 
 
+
 namespace TSCL.operations
 {
     /// <summary>
@@ -129,8 +130,9 @@ namespace TSCL.operations
         /// Write the entire Section to file once
         /// changes are done and final.
         /// </summary>
+        /// <param name="append">Set to true if you want to append or not(default is false)</param>
 
-        public void WriteToFile() //Write current section to file, programmers mut manually change section then write to file
+        public void WriteToFile(bool append = false) //Write current section to file, programmers mut manually change section then write to file
         {
             List<string> lines = new List<string>();
 
@@ -156,7 +158,15 @@ namespace TSCL.operations
                 lines.Add(Environment.NewLine); //newline after every section for proper formatting
             }
 
-           File.WriteAllLines(filename, lines); //after adding all tokens to our list of strings, we write the strings to the file
+            using (StreamWriter sw = new StreamWriter(filename, append)) // write all changes to file.
+            {           
+                foreach(var line in lines)
+                {
+                    sw.WriteLine(line);
+                }
+
+                sw.Close(); // close the stream after we wrote all the lines to file
+            }
         }
         
 
