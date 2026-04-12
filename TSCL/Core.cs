@@ -63,13 +63,22 @@ public struct Token //token struct for tokenization
 /// </summary>
 public static class Initialize //Sets the file for all 3 classes, instead of having to declare the file you want to use
 {
+    /// <summary>
+    /// File TSCL will perform operations on, (Read only once outside of Initializer)
+    /// </summary>
     public static string FileName { get; private set; } // public get but cant be written outside of this class
 
     public static List<string> FileNames { get; private set; } = new List<string>(); // File names incase the user wants to use more than one files
 
     internal static int lineN0 { get; private set; } = 1; // we always start at line 1;
 
-    internal static List<int> markedLines { get; private set; } = new List<int>();
+    internal static List<int> markedLines { get; private set; } = new List<int>(); // list of files a user may use.
+
+    /// <summary>
+    /// Indicator if TSCL will use its unified Filename by
+    /// setting it in SetFile or instance based. 
+    /// </summary>
+    public static bool Universal { internal get; set; } = true; //if the user wants to pass the file Universally or per instance
 
     public static void setFile(string src) //sets the path for the 3 classes to use.
     {
@@ -79,7 +88,7 @@ public static class Initialize //Sets the file for all 3 classes, instead of hav
             throw new FileNotFoundException($"File: {src} does not exist!");
         }
 
-        if(Path.GetExtension(src) != ".tscl") //it exists but its not a tscl file.
+        if(Path.GetExtension(src) != "tscl") //it exists but its not a tscl file.
         {
             throw new Exception($"File: {src} is not a .tscl file!");
         }
@@ -103,7 +112,7 @@ public static class Initialize //Sets the file for all 3 classes, instead of hav
             throw new FileNotFoundException($"File: {src}does not exist!");
         }
 
-        if(Path.GetExtension(src) != ".tscl")
+        if(Path.GetExtension(src) != "tscl")
         {
             throw new Exception($"File: {Path.GetFileName(src)} is not a .tscl file!");
         }

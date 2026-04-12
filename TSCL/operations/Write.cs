@@ -22,14 +22,33 @@ namespace TSCL.operations
         /// 
         /// <exception cref="Exception"> If the file doesn't have the .tscl extension then we throw in an Error</exception>
 
-        public Write()
+        public Write(string src = "")
         {
             if(FileName == null)
             {
                 Warn("File not set!");
             }
 
-            filename = FileName; // pass sourcefile on Initialization
+            if (Universal) // if universal is true, we use initializers file path
+            {
+                filename = FileName; // pass sourcefile on Initialization
+            }
+            else
+            {
+                if (!File.Exists(src))
+                {
+                    Warn($"File: {src} does not exist!");
+                }
+
+                if(Path.GetExtension(src) != "tscl")
+                {
+                    Warn($"File: {src} is not a tscl file");
+                }
+
+                filename = src;
+            }
+
+
             TSCL = new Dictionary<string, List<Token>>();
         }
 

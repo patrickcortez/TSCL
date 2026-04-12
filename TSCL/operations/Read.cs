@@ -36,9 +36,9 @@ namespace TSCL.operations
         /// <summary>
         /// Initializes a new instance by reading the .tscl file.
         /// </summary>
-        /// <param name="src"></param>
+        /// <param name="fname">name of File(if universal is false)</param>
         /// <exception cref="FileNotFoundException"></exception>
-        public Read()
+        public Read(string fname = "")
         {
 
             if (FileName == null)
@@ -46,9 +46,27 @@ namespace TSCL.operations
                 Warn("File not set!");
             }
 
-            filename = FileName; // pass sourcefile on Initialization
-            visited = new HashSet<string>();
+            if (Universal == true) //if universal option is true, we use the file path from initializer
+            {
 
+                filename = FileName; // pass sourcefile on Initialization
+            }
+            else
+            {
+                if (!File.Exists(fname))
+                {
+                    Warn($"File: {fname} does not exist!");
+                }
+
+                if (Path.GetExtension(fname) != "tscl")
+                {
+                    Warn($"File: {fname} is not a tscl file");
+                }
+
+                filename = fname;
+            }
+
+            visited = new HashSet<string>();
             initilaizeRead();
         }
 

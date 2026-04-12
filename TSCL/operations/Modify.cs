@@ -21,16 +21,33 @@ namespace TSCL.operations
         /// <param name="filename">Your file you want to modify</param>
         /// <exception cref="FileNotFoundException">if the file doesnt exist then we cant modify it</exception>
         /// <exception cref="Exception">if the file exists but the section does not, so we cant modify a non existent section</exception>
-        public Modify() // Modify class constructor
+        public Modify(string src = "") // Modify class constructor
         {
             if (FileName == null)
             {
                 Warn("File not set!");
             }
 
-            fname = FileName;
-            lines = new List<string>();
+            if (Universal)
+            {
+                fname = FileName; // if universal is true, then we use the filename from the initializer
+            }
+            else
+            {
+                if (!File.Exists(src))
+                {
+                    Warn($"File: {fname} does not exist!");
+                }
 
+                if (Path.GetExtension(src) != "tscl")
+                {
+                    Warn($"File: {fname} is not a tscl file");
+                }
+
+                fname = src;
+            }
+
+            lines = new List<string>();
             initiateRead(); //we start our file reading immediately
 
             if (!found) //if Section Name doesnt exist we throw in an error
