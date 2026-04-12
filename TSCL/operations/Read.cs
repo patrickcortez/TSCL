@@ -147,7 +147,8 @@ namespace TSCL.operations
                     Console.WriteLine($"Line {lin}", Console.Error);
                 }
             }
-            
+            resetLine();
+            ClearLine();
             pos = string.Empty; //reset position once done
 
         }

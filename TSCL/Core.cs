@@ -58,13 +58,14 @@ public struct Token //token struct for tokenization
 }
 
 /// <summary>
-/// Set FilePath for all 3 classes to use: Read,Write and Modify
+/// Set FilePath for all 3 classes to use: Read,Write and Modify.
+/// Note: File is automatically added to the Filenames list
 /// </summary>
 public static class Initialize //Sets the file for all 3 classes, instead of having to declare the file you want to use
 {
     public static string FileName { get; private set; } // public get but cant be written outside of this class
 
-    public static List<string>? FileNames { get; private set; }
+    public static List<string> FileNames { get; private set; } = new List<string>(); // File names incase the user wants to use more than one files
 
     internal static int lineN0 { get; private set; } = 1; // we always start at line 1;
 
@@ -83,17 +84,47 @@ public static class Initialize //Sets the file for all 3 classes, instead of hav
             throw new Exception($"File: {src} is not a .tscl file!");
         }
 
+        AddFile(src);
         FileName = src;
     }
 
+    /// <summary>
+    /// Adds filepath to the FileNames list
+    /// </summary>
+    /// <param name="src">file you want to use</param>
+    /// <exception cref="FileNotFoundException"></exception>
+    /// <exception cref="Exception"></exception>
 
     public static void AddFile(string src)
     {
+
+        if (!File.Exists(src))
+        {
+            throw new FileNotFoundException($"File: {src}does not exist!");
+        }
+
+        if(Path.GetExtension(src) != ".tscl")
+        {
+            throw new Exception($"File: {Path.GetFileName(src)} is not a .tscl file!");
+        }
+
         FileNames.Add(src);
     }
 
+    /// <summary>
+    /// Sets the current file name to the file you want to use
+    /// by changing its index to that file.
+    /// </summary>
+    /// <param name="index"></param>
+    /// <exception cref="Exception"></exception>
     public static void UseFile(int index)
     {
+
+        if(FileNames.Count < 1)
+        {
+            throw new Exception("File names is empty!");
+        }
+
         FileName = FileNames[index];
     }
 
@@ -102,11 +133,6 @@ public static class Initialize //Sets the file for all 3 classes, instead of hav
     internal static void advanceline()
     {
         lineN0++;
-    }
-
-    internal static int getLine()
-    {
-        return lineN0;
     }
 
     internal static void resetLine()
