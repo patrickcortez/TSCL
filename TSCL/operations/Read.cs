@@ -1,5 +1,6 @@
 ﻿// TSCL Read Operation
 using static TSCL.utils.Utility;
+using static TSCL.utils.Typecaster;
 using static TSCL.Initialize;
 
 namespace TSCL.operations
@@ -263,7 +264,7 @@ namespace TSCL.operations
         /// <param name="PointerObjKey">Name of the object if the object is in a pointer</param>
         /// <returns>returns value of the objects</returns>
         /// <exception cref="Exception">Thrown if the object is of null value</exception>
-        public object getObjectData(string key,string targect_section) // key and Pointer Object key for grabbing objects in another section(Empty by default)
+        internal object getObjectData(string key,string targect_section) // key and Pointer Object key for grabbing objects in another section(Empty by default)
         {
             object data = null;
 
@@ -315,9 +316,15 @@ namespace TSCL.operations
         /// <returns>It returns an Array of strings</returns>
         /// <exception cref="Exception">Thrown if the arrays size is 0</exception>
 
-        public string[] getArrayData(string key) //array handler
+        internal string[] getArrayData(string key,string target_section) //array handler
         {
-            List<Token> tmp = tokens[pos]; // get our list of objects to find the said array
+
+            if(target_section != pos)
+            {
+                advance(target_section);
+            }
+
+            List<Token> tmp = current(); // get our list of objects to find the said array
             string[]? datas = null;
 
             foreach (Token tok in tmp) // iterate through every token, to find the said array:
@@ -335,6 +342,34 @@ namespace TSCL.operations
             }
 
             return datas; // once array is found we return the array to the user
+        }
+
+
+        /// <summary>
+        /// Retrieves the value of a specified object in a specific section
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key">Name of the object</param>
+        /// <param name="target_section">Name of the section</param>
+        /// <returns></returns>
+        public T GetValue<T>(string key,string target_section) // Gets objects value then typecasts it  
+        {
+                object raw = getObjectData(key, target_section); //we call the internal method to pass the data to cast objects to convert it to the type of the object
+                return CastObject<T>(raw); // converts the type of the object
+            
+        }
+
+        /// <summary>
+        /// Retrieves the value of the array in a specific section.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public T[] GetArrayValue<T>(string key,string target_section) //gets arrays value then type casts it
+        {
+            string[] rawstr = getArrayData(key,target_section); // we call the internal method to store the arrays contents
+
+            return rawstr.Select(str => CastObject<T>(str)).ToArray(); // then each one is being determined the type based on the type of the object
         }
 
 

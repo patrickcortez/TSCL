@@ -108,9 +108,9 @@ namespace Test{
 				
 			read.setSection("Section1"); //We then set which section to start with
 
-			object data = read.getObjectData("Object_Name"); //after setting we can grab our datas value with the getObjectData()
+			int data = read.GetValue("Object_Name"); //after setting we can grab our datas value with the GetValue().
 
-			arr = read.getArrayData("Array_Name"); //Or if its an array we can go ahead and use the getArrayData(), since it returns a string Array.
+			arr = read.GetArrayValue("Array_Name"); //Or if its an array we can go ahead and use the GetArrayValue().
 
 			tokens = read.getSectionObjects("NextSection"); // We can also grab objects of Sections and manually use them.
 			// in the parameters you can put a section name to advance to that section or use the current section by
