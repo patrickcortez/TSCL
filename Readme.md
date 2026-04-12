@@ -77,7 +77,7 @@ TSCL has two modes you can toggle in the Initializer class. Simply set the stati
 Filename instead of their own in their constructor. However when *false* the 3 classes wont use the initializers, instead
 it will use what you pass on its constructor.
 
-Note: Univesal is **true** by default.
+Note: Universal is **true** by default.
 
 ---
 

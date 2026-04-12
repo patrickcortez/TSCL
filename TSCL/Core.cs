@@ -39,7 +39,6 @@ public struct Token //token struct for tokenization
    public Obj obj; //object handling
    public ArrObj arr; //array of objects
 
-#nullable enable
 
     public Token(Types ttype, string key = "", object? data = null, string[]? datas = null, bool isArr = false) // token definition Token(type,obj-key,value(if object),values(ifarr),true/fase)
     {
@@ -58,7 +57,7 @@ public struct Token //token struct for tokenization
 }
 
 /// <summary>
-/// Set FilePath for all 3 classes to use: Read,Write and Modify.
+/// State Manager of TSCL, sets file for the 3 classes to use if Universal is true which in default it is.
 /// Note: File is automatically added to the Filenames list
 /// </summary>
 public static class Initialize //Sets the file for all 3 classes, instead of having to declare the file you want to use
@@ -80,6 +79,13 @@ public static class Initialize //Sets the file for all 3 classes, instead of hav
     /// </summary>
     public static bool Universal { internal get; set; } = true; //if the user wants to pass the file Universally or per instance
 
+
+    /// <summary>
+    /// Specifies the file you want TSCL to use.
+    /// </summary>
+    /// <param name="src"> TSCL source file you want to use</param>
+    /// <exception cref="FileNotFoundException"></exception>
+    /// <exception cref="Exception"></exception>
     public static void setFile(string src) //sets the path for the 3 classes to use.
     {
 
@@ -88,7 +94,7 @@ public static class Initialize //Sets the file for all 3 classes, instead of hav
             throw new FileNotFoundException($"File: {src} does not exist!");
         }
 
-        if(Path.GetExtension(src) != "tscl") //it exists but its not a tscl file.
+        if(Path.GetExtension(src) != ".tscl") //it exists but its not a tscl file.
         {
             throw new Exception($"File: {src} is not a .tscl file!");
         }
@@ -104,6 +110,9 @@ public static class Initialize //Sets the file for all 3 classes, instead of hav
     /// <exception cref="FileNotFoundException"></exception>
     /// <exception cref="Exception"></exception>
 
+    ///<summary>
+    /// Adds file to the list of tscl files.
+    ///</summary>
     public static void AddFile(string src)
     {
 
@@ -112,7 +121,7 @@ public static class Initialize //Sets the file for all 3 classes, instead of hav
             throw new FileNotFoundException($"File: {src}does not exist!");
         }
 
-        if(Path.GetExtension(src) != "tscl")
+        if(Path.GetExtension(src) != ".tscl")
         {
             throw new Exception($"File: {Path.GetFileName(src)} is not a .tscl file!");
         }

@@ -103,6 +103,7 @@ namespace TSCL.utils
         /// </summary>
         /// <param name="data">string variable you want to tokenize</param>
         /// <param name="seperators"></param>
+        /// <param name="Nospaces">if you want spaces to be included or nah</param>
         /// <returns>It returns a string array</returns>
 
         // TSCL manual tokenizer

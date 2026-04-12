@@ -22,7 +22,7 @@ namespace TSCL.operations
         /// <exception cref="Exception">if the file exists but the section does not, so we cant modify a non existent section</exception>
         public Modify(string src = "") // Modify class constructor
         {
-            if (FileName == null)
+            if (FileName == null && Universal)
             {
                 Warn("File not set!");
             }
@@ -38,7 +38,7 @@ namespace TSCL.operations
                     Warn($"File: {fname} does not exist!");
                 }
 
-                if (Path.GetExtension(src) != "tscl")
+                if (Path.GetExtension(src) != ".tscl")
                 {
                     Warn($"File: {fname} is not a tscl file");
                 }

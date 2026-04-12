@@ -25,7 +25,7 @@ namespace TSCL.operations
 
         public Write(string src = "")
         {
-            if(FileName == null)
+            if(FileName == null && Universal)
             {
                 Warn("File not set!");
             }
@@ -41,7 +41,7 @@ namespace TSCL.operations
                     Warn($"File: {src} does not exist!");
                 }
 
-                if(Path.GetExtension(src) != "tscl")
+                if(Path.GetExtension(src) != ".tscl")
                 {
                     Warn($"File: {src} is not a tscl file");
                 }

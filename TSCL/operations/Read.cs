@@ -41,7 +41,7 @@ namespace TSCL.operations
         public Read(string fname = "")
         {
 
-            if (FileName == null)
+            if (FileName == null && Universal)
             {
                 Warn("File not set!");
             }
@@ -58,7 +58,7 @@ namespace TSCL.operations
                     Warn($"File: {fname} does not exist!");
                 }
 
-                if (Path.GetExtension(fname) != "tscl")
+                if (Path.GetExtension(fname) != ".tscl")
                 {
                     Warn($"File: {fname} is not a tscl file");
                 }
@@ -113,38 +113,46 @@ namespace TSCL.operations
                         }
                         advanceline();
                     }
-                    else if (words[1].StartsWith('@')) // Section poiner: points to other sections
+                    else if (words.Length > 1)
                     {
-                        tmp.Add(new Token(Types.POINTER, words[0], words[1].TrimStart(']')));
-                        continue;
+                        if (words[1].StartsWith('@')) // Section poiner: points to other sections
+                        {
+                            tmp.Add(new Token(Types.POINTER, words[0], words[1].TrimStart(']')));
+                            continue;
+                        }
+                        else if (words[1].Contains(',')) //arrays (they are string and string only)
+                        {
+                            string[] subs = words[1].Split(',');
+
+                            tmp.Add(new Token(Types.ARRAY, words[0], string.Empty, subs, true));
+                            advanceline();
+                            continue;
+                        }
+                        else if (!words[1].Contains(',')) // non array object
+                        {
+                            bool res;
+                            if (isInt(words[1])) //integer
+                            {
+                                tmp.Add(new Token(Types.OBJECT, words[0], Strint(words[1])));
+                            }
+                            else if (bool.TryParse(words[1], out res)) //boolean 
+                            {
+                                tmp.Add(new Token(Types.OBJECT, words[0], ConvertBool(words[1])));
+                            }
+                            else //string
+                            {
+                                tmp.Add(new Token(Types.OBJECT, words[0], words[1]));
+                            }
+
+                            advanceline();
+                            continue;
+
+                        }
                     }
-                    else if (words[1].Contains(',')) //arrays (they are string and string only)
+                    else // if line is invalid we just mark them
                     {
-                        string[] subs = words[1].Split(',');
-
-                        tmp.Add(new Token(Types.ARRAY, words[0], string.Empty, subs, true));
                         advanceline();
-                        continue;
-                    }
-                    else if (!words[1].Contains(',')) // non array object
-                    {
-                        bool res;
-                        if (isInt(words[1])) //integer
-                        {
-                            tmp.Add(new Token(Types.OBJECT, words[0], Strint(words[1])));
-                        }
-                        else if (bool.TryParse(words[1], out res)) //boolean 
-                        {
-                            tmp.Add(new Token(Types.OBJECT, words[0], ConvertBool(words[1])));
-                        }
-                        else //string
-                        {
-                            tmp.Add(new Token(Types.OBJECT, words[0], words[1]));
-                        }
-
-                        advanceline();
-                        continue;
-
+                        markLine(lineN0);
                     }
 
 
@@ -236,54 +244,46 @@ namespace TSCL.operations
         /// <param name="PointerObjKey">Name of the object if the object is in a pointer</param>
         /// <returns>returns value of the objects</returns>
         /// <exception cref="Exception">Thrown if the object is of null value</exception>
-        public object getObjectData(string key, string PointerObjKey = "") // key and Pointer Object key for grabbing objects in another section(Empty by default)
+        public object getObjectData(string key,string targect_section) // key and Pointer Object key for grabbing objects in another section(Empty by default)
         {
-            List<Token> tmp = tokens[pos];
             object data = null;
 
-
-            foreach (Token tok in tmp)
+            foreach (KeyValuePair<string, List<Token>> keyval in tokens)
             {
-                if (tok.tokentype == Types.OBJECT && tok.obj.key == key)
+                if(keyval.Key != targect_section)
                 {
-                    data = tok.obj.data;
-                    break;
+                    continue;
                 }
-                else if (tok.tokentype == Types.POINTER && tok.obj.key == key)
-                {
-                    string target = ((string)tok.obj.data).TrimStart('@');
-                    data = handlePointer(target);
 
+                foreach (Token tok in keyval.Value)
+                {
+                    if (tok.tokentype == Types.OBJECT && tok.obj.key == key)
+                    {
+                        data = tok.obj.data;
+                        break;
+                    }
+                    else if (tok.tokentype == Types.POINTER && tok.obj.key == key)
+                    {
+                        string target = ((string)tok.obj.data).TrimStart('@');
+                        data = handlePointer(target);
+
+                    }
                 }
             }
 
             if (data is Token[] tokarr) // pointer handling for all its objects
             {
-                foreach (Token tok in tokarr)
-                {
-                    if (tok.tokentype == Types.OBJECT && tok.obj.key == PointerObjKey) // if target is obj
-                    {
-                        return tok.obj.data;
-                    }
-                    else if (tok.tokentype == Types.ARRAY && tok.arr.key == PointerObjKey) // if its an array
-                    {
-                        return tok.obj.data;
-                    }
-                }
+                return tokarr;
             }
 
             if (data is null)
             {
-                throw new Exception($"Object: {key} or {PointerObjKey} is null!");
+                throw new Exception($"Object: {key} is null!");
             }
 
-            if (data is int)
+            if(data is int || data is bool)
             {
-                return (int)data;
-            }
-            else if (data is bool)
-            {
-                return (bool)data;
+                return data;
             }
 
             return data.ToString(); // we return the data in a string by default
