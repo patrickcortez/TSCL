@@ -19,6 +19,7 @@ using static TSCL.utils.Utility;
 using static TSCL.utils.Typecaster;
 using static TSCL.Initialize;
 using TSCL.utils;
+using TSCL.interfaces;
 
 namespace TSCL.operations
 {
@@ -26,7 +27,7 @@ namespace TSCL.operations
     /// <summary>
     /// This class is responsible for Deserializing/Reading contents of a .tscl file.
     /// </summary>
-    public class Read // read from file
+    public class Read : IRead // read from file
     {
         string filename = string.Empty; //source file
         Dictionary<string, List<Token>> tokens = new Dictionary<string, List<Token>>(); //list of sections: tokens["Section-name"]
@@ -86,13 +87,13 @@ namespace TSCL.operations
             }
 
             visited = new HashSet<string>();
-            initilaizeRead();
+            InitilaizeRead();
         }
 
         /// <summary>
         /// Reads entire tscl file line by line and tokenizes it.
         /// </summary>
-        private void initilaizeRead() // TSCL tokenizer, THIS took me an hour to think of. 
+        private void InitilaizeRead()// TSCL tokenizer, THIS took me an hour to think of. 
         {
             List<Token> tmp = new List<Token>(); // list of all objects in the section
             string SectionName,line;

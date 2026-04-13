@@ -90,8 +90,11 @@ public static class Initialize //Sets the file for all 3 classes, instead of hav
     /// <summary>
     /// File TSCL will perform operations on, (Read only once outside of Initializer)
     /// </summary>
-    public static string FileName { get; private set; } // public get but cant be written outside of this class
+    public static string FileName { get; private set; } = string.Empty; // public get but cant be written outside of this class
 
+    /// <summary>
+    /// Contains a list of tscl files.
+    /// </summary>
     public static List<string> FileNames { get; private set; } = new List<string>(); // File names incase the user wants to use more than one files
 
     internal static int lineN0 { get; private set; } = 0; // we always start at line 0;
