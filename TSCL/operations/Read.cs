@@ -2,6 +2,7 @@
 using static TSCL.utils.Utility;
 using static TSCL.utils.Typecaster;
 using static TSCL.Initialize;
+using TSCL.utils;
 
 namespace TSCL.operations
 {
@@ -128,7 +129,8 @@ namespace TSCL.operations
                         }
                         else if (words[1].Contains(',')) //arrays (they are string and string only)
                         {
-                            string[] subs = words[1].Split(',');
+                            char[] d = { ',' };
+                            string[] subs = Tokenize(words[1], d,ref isvalid);
 
                             tmp.Add(new Token(Types.ARRAY, words[0], string.Empty, subs, true));
 
@@ -301,12 +303,7 @@ namespace TSCL.operations
                 throw new Exception($"Object: {key} is null!");
             }
 
-            if(data is int || data is bool)
-            {
-                return data;
-            }
-
-            return data.ToString(); // we return the data in a string by default
+            return data; // we return the data in a string by default
         }
 
         /// <summary>
@@ -316,7 +313,7 @@ namespace TSCL.operations
         /// <returns>It returns an Array of strings</returns>
         /// <exception cref="Exception">Thrown if the arrays size is 0</exception>
 
-        internal string[] getArrayData(string key,string target_section) //array handler
+        internal object[] getArrayData(string key,string target_section) //array handler
         {
 
             if(target_section != pos)
@@ -325,23 +322,27 @@ namespace TSCL.operations
             }
 
             List<Token> tmp = current(); // get our list of objects to find the said array
-            string[]? datas = null;
+            List<string> datas = new List<string>();
 
-            foreach (Token tok in tmp) // iterate through every token, to find the said array:
-            {
-                if (tok.tokentype == Types.ARRAY && tok.arr.key == key)
+
+                foreach (Token tok in tmp) // iterate through every token, to find the said array:
                 {
-                    datas = tok.arr.data.ToArray();
-                    break;
+                    if (tok.tokentype == Types.ARRAY && tok.arr.key == key)
+                    {
+                        datas.AddRange(tok.arr.data);
+                        break;
+                    }
                 }
-            }
 
-            if (datas == null)
+            
+
+
+            if (datas.Count < 1)
             {
-                throw new Exception("Array size cannot be empty!");
+                throw new EmptyArraySizeException();
             }
 
-            return datas; // once array is found we return the array to the user
+            return datas.ToArray(); // once array is found we return the array to the user
         }
 
 
@@ -367,7 +368,7 @@ namespace TSCL.operations
         /// <returns></returns>
         public T[] GetArrayValue<T>(string key,string target_section) //gets arrays value then type casts it
         {
-            string[] rawstr = getArrayData(key,target_section); // we call the internal method to store the arrays contents
+            object[] rawstr = getArrayData(key,target_section); // we call the internal method to store the arrays contents
 
             return rawstr.Select(str => CastObject<T>(str)).ToArray(); // then each one is being determined the type based on the type of the object
         }

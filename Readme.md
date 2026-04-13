@@ -11,6 +11,12 @@ Instead **TSCL** has *Pointers* that points to a *Section*. In **TSCL**, this si
 - Arrays
 - Pointers
 
+**TSCL** has 3 major operations you can use:
+
+- Write : Serializing
+- Read : Deserializing
+- Modify : File Modification
+
 
 ## Sections
 
@@ -32,21 +38,38 @@ Members=30
 
 ## Objects
 
-You can add as many **objects** as you want in any section, **TSCL** has 3 *object* types:
+You can add as many **objects** as you want in any section, **TSCL** can have any object type
+because after parsing its Typecaster will handle the conversion of the objects value.
 
-- String
-- Integer
-- Boolean
+```TSCL
+
+[Section1]
+
+Obj=true #boolean
+
+Obj2=200 #Integer
+
+obj3="Name" #String
+
+Obj4=20.80 #float
+
+# And so forth....
+
+
+```
 
 ## Arrays
 
-**TSCL** *arrays* are strictly strings, so it can be parsed serialized and deserialized easily.
-You can declare an array by simply Adding commas after you declared your array name:
+**TSCL** *arrays* can be any data type now. declaring arrays is simple. You just have to put
+commas to add a new element to your array:
+
 
 ```	TSCL
 
 [Section]
 Array="One","Two","Three"
+Array2=1,2,3
+Array3=3.2,3.1,3.0
 
 ```
 
@@ -69,6 +92,11 @@ isActive=true
 Note: Your Pointer value has to always have a '@' symbol at the very start, other wise its just a regular object.
 And also your *Pointer* has to have the same name as your target *Section*
 
+## Comments
+
+You can also insert comments in your *tscl* file with the '#' character, because the Parser will ignore any comments and whitespaces. 
+So you can put as much whitespace in between your objects.
+
 
 ## Modes
 
@@ -81,6 +109,19 @@ There is also "isVerbose", which basically prints all the errors in your tscl fi
 prints the errors on your console, but if its false it does not.
 
 Note: Both isVerbose and isUniversal is **false** by default.
+
+
+---
+
+## Data Pipeline
+
+**TSCL**'s data pipeline is relatively simple. Depending on your config whether *isUniversal* is set to true or false.
+**TSCL**'s 3 main operations will first scan and tokenize your file/s upon initialization of their classes.
+
+After you have initialized the operations. you can then begin deserializing, serializing or modifying your
+tscl file.
+
+File/s->Tokenizer(Scans and Tokenizes)->Parser->TypeCaster
 
 ---
 
