@@ -70,6 +70,8 @@ return the object as it is, for Conversion in TypeCaster.
 	<PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
 
 	<Copyright>Copyright © 2026 Patrick Cortez</Copyright>
+
+	<Authors>Tezzz2026</Authors>
   </PropertyGroup>
 
 	<ItemGroup>
