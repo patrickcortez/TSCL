@@ -212,7 +212,7 @@ in Visual Studio, just go to **Manage NuGet Packages** and search up **TSCL**.
 
 ## Logo
 
-![Official](Assets/TSCL_Logo.png)
+![Official](https://i.imgur.com/zmjeqsE.png)
 
 ---
 
