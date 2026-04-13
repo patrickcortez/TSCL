@@ -16,6 +16,7 @@
 
 // TSCL Write Operation
 using static TSCL.utils.Utility;
+using TSCL.utils;
 using static TSCL.Initialize;
 
 
@@ -82,7 +83,10 @@ namespace TSCL.operations
                 throw new ArgumentNullException("Section Name Cannot be NUll!");
             }
 
-            name = clearSpace(name); //clear all spaces just to be sure.
+            if(name.Contains('=') || name.Contains(','))
+            {
+                throw new InvalidSectionNameException($"{name} is not a valid section name!");
+            }
 
             TSCL[name] = new List<Token>();
         }

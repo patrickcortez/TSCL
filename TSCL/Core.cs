@@ -94,7 +94,7 @@ public static class Initialize //Sets the file for all 3 classes, instead of hav
 
     public static List<string> FileNames { get; private set; } = new List<string>(); // File names incase the user wants to use more than one files
 
-    internal static int lineN0 { get; private set; } = 1; // we always start at line 1;
+    internal static int lineN0 { get; private set; } = 0; // we always start at line 0;
 
     internal static List<int> markedLines { get; private set; } = new List<int>(); // list of files a user may use.
 
