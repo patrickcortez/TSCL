@@ -1,0 +1,11 @@
+[main]
+isActive=true
+name="Patrick"
+Version=2
+??
+names=Timmy,John,Tomm
+next=@sub
+
+[sub]
+isMember=false
+Age=23
