@@ -112,7 +112,7 @@ namespace TSCL.operations
                     }
 
 
-                    char[] seperators = { '=', ',' };
+                    char[] seperators = { '=' };
                     string[] words = Tokenize(line, seperators,ref isvalid);
 
                     if (words[0].StartsWith('[') && words[0].EndsWith(']')) //Section
