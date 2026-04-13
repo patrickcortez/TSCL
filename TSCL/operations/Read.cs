@@ -19,6 +19,7 @@ using static TSCL.utils.Utility;
 using static TSCL.utils.Typecaster;
 using static TSCL.Initialize;
 using TSCL.utils;
+using System.Diagnostics;
 
 namespace TSCL.operations
 {
@@ -201,11 +202,11 @@ namespace TSCL.operations
 
             if(markedLines.Count > 0 && isVerbose)
             {
-                Console.WriteLine("Invalid Lines Ignored:",Console.Error);
+                Debug.WriteLine("Invalid Lines Ignored:",Console.Error);
 
                 foreach (int lin in markedLines)
                 {
-                    Console.WriteLine($"Line {lin}", Console.Error);
+                    Debug.WriteLine($"Line: {lin}");
                 }
             }
             //reset line for the next script
@@ -279,7 +280,7 @@ namespace TSCL.operations
         /// It grabs the specified value of an object in the current section
         /// </summary>
         /// <param name="key">Name of the object</param>
-        /// <param name="PointerObjKey">Name of the object if the object is in a pointer</param>
+        /// <param name="targect_section">Name of the object if the object is in a pointer</param>
         /// <returns>returns value of the objects</returns>
         /// <exception cref="Exception">Thrown if the object is of null value</exception>
         internal object getObjectData(string key,string targect_section) // key and Pointer Object key for grabbing objects in another section(Empty by default)
@@ -326,6 +327,7 @@ namespace TSCL.operations
         /// It gets the values of an array object
         /// </summary>
         /// <param name="key">name of the array</param>
+        /// <param name="target_section">Your target section</param>
         /// <returns>It returns an Array of strings</returns>
         /// <exception cref="Exception">Thrown if the arrays size is 0</exception>
 
@@ -381,6 +383,7 @@ namespace TSCL.operations
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
+        /// <param name="target_section">Your target section</param>
         /// <returns></returns>
         public T[] GetArrayValue<T>(string key,string target_section) //gets arrays value then type casts it
         {

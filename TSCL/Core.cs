@@ -37,9 +37,24 @@ namespace TSCL; // list of dictionary of lists (List<Dictionary<string,List<Obj>
 /// </summary>
 public enum Types // our types of tokens: Sections, Objects, array(list of objects) and pointer (an object which points to a section aka a map)
 {
-    SECTION, // defines sections [Section]
+    /// <summary>
+    ///  Defines a Section type token
+    /// </summary>
+    SECTION, // defines sections [Section] 
+
+    /// <summary>
+    /// Defines an object type token
+    /// </summary>
     OBJECT, //for objects
+
+    /// <summary>
+    /// Defines an array type token
+    /// </summary>
     ARRAY, //arrays
+
+    /// <summary>
+    /// Defines an Pointer type token
+    /// </summary>
     POINTER //Pointers, Object that points to a Section
 }
 
@@ -64,7 +79,14 @@ public struct Token //token struct for tokenization
     /// </summary>
    public ArrObj arr; //array of objects
 
-
+    /// <summary>
+    /// Constructor of Token Struct, Initializes the whole token.
+    /// </summary>
+    /// <param name="ttype">Type of the token</param>
+    /// <param name="key">Name of the token</param>
+    /// <param name="data">Value of the token</param>
+    /// <param name="datas">Values of the token (if isArray)</param>
+    /// <param name="isArr">Indicator if the token is an array</param>
     public Token(Types ttype, string key = "", object? data = null, string[]? datas = null, bool isArr = false) // token definition Token(type,obj-key,value(if object),values(ifarr),true/fase)
     {
         tokentype = ttype;
@@ -92,10 +114,19 @@ public static class Initialize //Sets the file for all 3 classes, instead of hav
     /// </summary>
     public static string FileName { get; private set; } // public get but cant be written outside of this class
 
+    /// <summary>
+    /// List of tscl files.
+    /// </summary>
     public static List<string> FileNames { get; private set; } = new List<string>(); // File names incase the user wants to use more than one files
 
+    /// <summary>
+    /// Line number for error logging
+    /// </summary>
     internal static int lineN0 { get; private set; } = 0; // we always start at line 0;
 
+    /// <summary>
+    /// For marking line numbers of garbage lines.
+    /// </summary>
     internal static List<int> markedLines { get; private set; } = new List<int>(); // list of files a user may use.
 
     /// <summary>
@@ -103,6 +134,10 @@ public static class Initialize //Sets the file for all 3 classes, instead of hav
     /// setting it in SetFile or instance based. 
     /// </summary>
     public static bool isUniversal { internal get; set; } = false; //if the user wants to pass the file Universally or per instance
+
+    /// <summary>
+    /// Indicator if error logging is enabled.
+    /// </summary>
     public static bool isVerbose { internal get; set; } = false; // for error logging
 
 

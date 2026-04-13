@@ -34,7 +34,7 @@ namespace TSCL.operations
         /// <summary>
         /// Initializes the file and reads the file for modification.
         /// </summary>
-        /// <param name="filename">Your file you want to modify</param>
+        /// <param name="src">Your file you want to modify</param>
         /// <exception cref="FileNotFoundException">if the file doesnt exist then we cant modify it</exception>
         /// <exception cref="Exception">if the file exists but the section does not, so we cant modify a non existent section</exception>
         public Modify(string src = "") // Modify class constructor
@@ -171,7 +171,12 @@ namespace TSCL.operations
             }
 
         }
-
+        
+        /// <summary>
+        /// To modify a section name.
+        /// </summary>
+        /// <param name="oldName">Target section</param>
+        /// <param name="newName">New name for the target section</param>
         public void modifySectionName(string oldName,string newName)
         {
             for(int x = 0;x < lines.Count; x++)
