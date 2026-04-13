@@ -1,4 +1,20 @@
-﻿// Main TSCL Definitions: Token and Types
+﻿// TSCL - Tezz's Simple Configuration Language
+// Copyright (C) 2026 Patrick Cortez
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+// Main TSCL Definitions: Token and Types
 using ArrObj = (string key, string[] data);
 using Obj = (string key, object data); // our object data type
 
@@ -12,6 +28,7 @@ namespace TSCL; // list of dictionary of lists (List<Dictionary<string,List<Obj>
 
 /*
  * TODO's:
+ * <None> =D
  */
 
 
@@ -20,10 +37,10 @@ namespace TSCL; // list of dictionary of lists (List<Dictionary<string,List<Obj>
 /// </summary>
 public enum Types // our types of tokens: Sections, Objects, array(list of objects) and pointer (an object which points to a section aka a map)
 {
-    SECTION,
-    OBJECT,
-    ARRAY,
-    POINTER
+    SECTION, // defines sections [Section]
+    OBJECT, //for objects
+    ARRAY, //arrays
+    POINTER //Pointers, Object that points to a Section
 }
 
 
@@ -32,8 +49,19 @@ public enum Types // our types of tokens: Sections, Objects, array(list of objec
 /// </summary>
 public struct Token //token struct for tokenization
 {
+    /// <summary>
+    /// The type of token, a token may have
+    /// OBJECT, ARRAY, SECTION or POINTER
+    /// </summary>
    public Types tokentype; // to determine our token type
+    /// <summary>
+    /// If the Token is a Non Array Object, 
+    /// We store em as an Obj, which is a pair of string "key" and object "data"
+    /// </summary>
    public Obj obj; //object handling
+    /// <summary>
+    /// For Array Objects
+    /// </summary>
    public ArrObj arr; //array of objects
 
 

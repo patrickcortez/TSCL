@@ -136,12 +136,12 @@ using TSCL; // Just Include this namespace to use: Read,Write and Modify
 
 namespace Test{
 
-	Public Class Test{
+	public class Test{
 		string[] arr;
 	
 		public Test(string filename){
 
-			Initializer.setFile("FilePath.tscl") //make sure you set your file before using: Read, Write and Modify
+			Initialize.setFile("FilePath.tscl") //make sure you set your file before using: Read, Write and Modify
 
 			Token[] tokens; 
 			//Deserializing
@@ -165,7 +165,7 @@ namespace Test{
 
 		public void initiateFile(){ // Serializing
 		
-			using(Write write = new Write()// Initialize Write
+			using(Write write = new Write()) // Initialize Write
 
 			write.AddSection("SectionName"); // This is how we add our section
 
@@ -199,6 +199,14 @@ namespace Test{
 
 
 ```
+
+---
+
+## Installation
+
+To install **TSCL** you can simple download this on [Nuget](https://www.nuget.org/packages/TSCL.Parser/1.3.3) or
+in Visual Studio, just go to **Manage NuGet Packages** and search up **TSCL**.
+
 
 ---
 
