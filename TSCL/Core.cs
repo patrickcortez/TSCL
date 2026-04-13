@@ -12,9 +12,6 @@ namespace TSCL; // list of dictionary of lists (List<Dictionary<string,List<Obj>
 
 /*
  * TODO's:
- *  - Improve Tokenizer with StreamReader.
- *  - Improve Error Handling
- *  - Refine Pointers.
  */
 
 
