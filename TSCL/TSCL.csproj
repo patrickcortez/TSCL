@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
 	  
 	<PackageID>TSCL.Parser</PackageID> 
-	<Version>1.3.3.3</Version>
+	<Version>1.3.4</Version>
 	<Description>TSCL or Tezz's Coniguration Language is a simple config language that is flat in nature and nesting is handled using pointers that points to other sections instead of braces.</Description>
 	<Author>Patrick Cortez</Author>
 	<Tags>configurations;tscl;settings</Tags>
@@ -66,7 +66,12 @@ return the object as it is, for Conversion in TypeCaster.
 
 1.3.3.3
 - Added a guard clause when adding a section in write
-- line no. starts at 0 instead of 1.</PackageReleaseNotes>
+- line no. starts at 0 instead of 1.
+
+1.3.4
+- Added missing xml comments
+- Changed output of Error logging from Console to Debug
+-Updated Readme.</PackageReleaseNotes>
 
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
 

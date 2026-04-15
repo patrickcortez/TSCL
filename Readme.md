@@ -1,5 +1,7 @@
 # TSCL
 
+![Badge1](https://img.shields.io/badge/TSCL-darkred) ![Badge2](https://img.shields.io/badge/Configuration-Language-green) ![Version](https://img.shields.io/badge/Version-1.3.4-purple)
+
 **TSCL** or *Tezz's Simple Configuration Language* is a flat Configuration langauge that is
 mainly used for configurations and other similar ventures. **TSCL** doesn't have braces and nested braces which
 could look confusing and messy in the long run. 
@@ -20,12 +22,12 @@ Instead **TSCL** has *Pointers* that points to a *Section*. In **TSCL**, this si
 
 ## Sections
 
-**Sections** are basically namespaces that you can group your *objects*,*arrays* and *pointers*.
+**Sections** are basically similar to namespaces that you can group your *objects*,*arrays* and *pointers*.
 
 ``` TSCL
 
-[Section-Name]
-ObjectName="Value"
+[Section-Name] # This is the section entry/name
+ObjectName="Value" #these are the objects accompanied with their values
 Object2= 21
 Array="Dave","John","Micheal"
 Next=@NextSection
@@ -39,7 +41,7 @@ Members=30
 ## Objects
 
 You can add as many **objects** as you want in any section, **TSCL** can have any object type
-because after parsing its Typecaster will handle the conversion of the objects value.
+because after parsing. Its *Typecaster* will handle the conversion of the objects value.
 
 ```TSCL
 
@@ -66,10 +68,12 @@ commas to add a new element to your array:
 
 ```	TSCL
 
-[Section]
-Array="One","Two","Three"
-Array2=1,2,3
-Array3=3.2,3.1,3.0
+[Section] 
+Array="One","Two","Three" # An array of strings
+Array2=1,2,3 # An array of integers
+Array3=3.2,3.1,3.0 # An Array of floats
+
+# and so on....
 
 ```
 
