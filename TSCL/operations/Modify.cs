@@ -35,9 +35,10 @@ namespace TSCL.operations
         /// Initializes the file and reads the file for modification.
         /// </summary>
         /// <param name="src">Your file you want to modify</param>
+        /// <param name="TargetSection">Target section you want to modify, so TSCL will only read that section</param>
         /// <exception cref="FileNotFoundException">if the file doesnt exist then we cant modify it</exception>
         /// <exception cref="Exception">if the file exists but the section does not, so we cant modify a non existent section</exception>
-        public Modify(string src = "") // Modify class constructor
+        public Modify(string src,string TargetSection) // Modify class constructor
         {
             if (FileName == null && isUniversal)
             {
@@ -52,17 +53,18 @@ namespace TSCL.operations
             {
                 if (!File.Exists(src))
                 {
-                    Warn($"File: {fname} does not exist!");
+                    Warn($"File: {src} does not exist!");
                 }
 
                 if (Path.GetExtension(src) != ".tscl")
                 {
-                    Warn($"File: {fname} is not a tscl file");
+                    Warn($"File: {src} is not a tscl file");
                 }
 
                 fname = src;
             }
 
+            Section = TargetSection;
             lines = new List<string>();
             initiateRead(); //we start our file reading immediately
 
@@ -181,14 +183,14 @@ namespace TSCL.operations
         {
             for(int x = 0;x < lines.Count; x++)
             {
-                char[] c = { '=' };
-                string[] words = Tokenize(lines[x],c,ref isValid);
-
-                if (isSect(words[0]))
+               
+                if (isSect(lines[x]))
                 {
-                    if (words[0] == oldName)
+                    string curr = lines[x].TrimStart('[').TrimEnd(']');
+                    if (curr == oldName)
                     {
-                        words[0] = newName;
+                        string nStr = String.Concat('[', newName, ']');
+                        lines[x] = nStr;
                         break;
                     }
                 }

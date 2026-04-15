@@ -13,11 +13,12 @@ Instead **TSCL** has *Pointers* that points to a *Section*. In **TSCL**, this si
 - Arrays
 - Pointers
 
-**TSCL** has 3 major operations you can use:
+**TSCL** has 4 major operations you can use:
 
 - Write : Serializing
 - Read : Deserializing
 - Modify : File Modification
+- Delete : Deletion of Sections or Objects
 
 
 ## Sections
@@ -194,6 +195,17 @@ namespace Test{
 				
 			
 		
+		}
+
+		pubic void Delete()
+		{
+			string[] skipSections = { "Section1","Section2"}; // Sections you want to skip
+			Delete del = new Delete("file.tscl",skipSections); // Add your file and array of sections you want to skip when initializing
+			
+			del.DeleteObject("ObjectName","Section3"); // for deleting an object in a section
+
+			del.DeleteSection("Section4"); // for deleting an entire section
+
 		}
 	
 	}
