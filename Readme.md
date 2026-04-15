@@ -1,6 +1,6 @@
 # TSCL
 
-![Badge1](https://img.shields.io/badge/TSCL-darkred) ![Badge2](https://img.shields.io/badge/Configuration-Language-green) ![Version](https://img.shields.io/badge/Version-1.3.4-purple)
+![Badge1](https://img.shields.io/badge/TSCL-darkred) ![Badge2](https://img.shields.io/badge/Configuration-Language-green) ![Version](https://img.shields.io/badge/Version-1.4-purple)
 
 **TSCL** or *Tezz's Simple Configuration Language* is a flat Configuration langauge that is
 mainly used for configurations and other similar ventures. **TSCL** doesn't have braces and nested braces which
